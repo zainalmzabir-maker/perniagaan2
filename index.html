@@ -56,7 +56,6 @@
         <p class="text-xs text-slate-500 mt-1">Sila log masuk mengikut peranan anda</p>
       </div>
 
-      <!-- Tab Peranan -->
       <div class="flex bg-slate-100 p-1.5 rounded-xl mb-5">
         <button id="tabMuridBtn" onclick="switchLoginTab('murid')" class="w-1/2 py-2 rounded-lg font-bold text-xs md:text-sm transition bg-white text-indigo-950 shadow">
           <i class="fa-solid fa-user-pen mr-1"></i> Calon Murid
@@ -75,12 +74,12 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nombor Kad Pengenalan (tanpa tanda '-')</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nombor Kad Pengenalan (tanpa sempang)</label>
           <input type="password" id="inputIcMurid" placeholder="Cth: 091130010503" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
-          <p class="text-[11px] text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i>No. KP digunakan sebagai kata laluan untuk menyimpan & menyambung soalan.</p>
+          <p class="text-[11px] text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i>No. KP anda digunakan untuk menyambung soalan dan melihat keputusan.</p>
         </div>
         <button onclick="loginMurid()" id="btnLoginMurid" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center">
-          <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Ujian
+          <i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Portal
         </button>
       </div>
 
@@ -91,25 +90,71 @@
           <input type="password" id="inputPassGuru" placeholder="Masukkan kata laluan guru" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
         </div>
         <button onclick="loginGuru()" class="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-md transition flex items-center justify-center">
-          <i class="fa-solid fa-lock-open mr-2"></i> Buka Mod Penandaan
+          <i class="fa-solid fa-lock-open mr-2"></i> Buka Mod Penandaan Guru
         </button>
       </div>
 
       <div id="loginMsg" class="mt-4 text-center text-xs font-bold hidden"></div>
     </section>
 
-    <!-- 2. PORTAL MURID (MENJAWAB KERTAS SOALAN) -->
+    <!-- 2. PORTAL MURID (MENJAWAB ATAU MELIHAT PENANDAAN) -->
     <section id="examSection" class="hidden space-y-6">
       
+      <!-- KAD KEPUTUSAN GURU (JIKA TELAH DITANDA) -->
+      <div id="panelKeputusanMurid" class="hidden bg-gradient-to-r from-emerald-900 to-teal-900 text-white rounded-2xl p-6 shadow-xl border border-emerald-500/30">
+        <div class="flex flex-wrap justify-between items-center gap-4 border-b border-emerald-700/50 pb-4">
+          <div>
+            <span class="px-3 py-1 bg-emerald-500 text-emerald-950 text-xs font-black rounded-full uppercase tracking-wider">
+              <i class="fa-solid fa-circle-check mr-1"></i> Kertas Telah Ditanda
+            </span>
+            <h3 class="text-xl font-black mt-2">Keputusan Rasmi Penandaan Guru</h3>
+            <p class="text-xs text-emerald-200" id="tarikhTandaMurid"></p>
+          </div>
+          <button onclick="window.print()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-indigo-950 font-bold text-xs rounded-xl shadow flex items-center transition no-print">
+            <i class="fa-solid fa-print mr-1.5"></i> Cetak Slip Keputusan
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 my-5 text-center">
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Bahagian A</span>
+            <p id="skorMuridA" class="text-lg font-black text-amber-300">0 / 50</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Bahagian B</span>
+            <p id="skorMuridB" class="text-lg font-black text-amber-300">0 / 30</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Bahagian C</span>
+            <p id="skorMuridC" class="text-lg font-black text-amber-300">0 / 20</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Jumlah Markah</span>
+            <p id="skorMuridJumlah" class="text-xl font-black text-white">0 / 100</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3 backdrop-blur-sm">
+            <span class="text-[10px] text-emerald-200 uppercase font-bold">Gred SPM</span>
+            <p id="skorMuridGred" class="text-2xl font-black text-amber-400">-</p>
+          </div>
+        </div>
+
+        <div class="bg-black/20 p-4 rounded-xl border border-white/10">
+          <span class="text-xs font-bold text-emerald-300 flex items-center">
+            <i class="fa-solid fa-comment-dots mr-1.5"></i> Ulasan & Maklum Balas Guru:
+          </span>
+          <p id="teksUlasanGuruMurid" class="text-xs text-slate-100 mt-1 italic leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+      </div>
+
       <!-- Bar Maklumat Peperiksaan & Sambung Jawapan -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 flex flex-wrap justify-between items-center gap-4">
         <div>
           <h2 class="text-xl font-black text-slate-900">KERTAS 2: BAHAGIAN A, B & C</h2>
           <p class="text-xs text-slate-500 mt-1">
-            <span class="font-bold text-indigo-700">Kemudahan Baharu:</span> Anda boleh menghantar jawapan secara berasingan mengikut soalan dan menyambung pada bila-bila masa.
+            <span class="font-bold text-indigo-700">Fleksibel:</span> Hantar dan simpan jawapan mengikut nombor soalan pada bila-bila masa.
           </p>
         </div>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 no-print">
           <span id="saveStatus" class="text-xs bg-emerald-100 text-emerald-800 px-3.5 py-1.5 rounded-full font-bold shadow-sm">
             <i class="fa-solid fa-check-circle mr-1"></i> Data Bersedia
           </span>
@@ -140,82 +185,76 @@
             <p class="text-xs text-indigo-200">Jawab semua soalan berikut.</p>
           </div>
 
-          <!-- SOALAN 1 (DENGAN LOGO KOPERASI LEBIH BESAR & JELAS) -->
+          <!-- SOALAN 1 -->
           <div id="soalan_card_1" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 1</span>
-              <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[10 Markah]</span>
+              <div class="flex items-center space-x-2">
+                <span id="markahMurid_s1" class="hidden text-xs bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full font-bold"></span>
+                <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[10 Markah]</span>
+              </div>
             </div>
 
-            <!-- Rangsangan: Logo 1 KOPERASI MAJU JAYA - DITAMBAH BESAR & TEGAS -->
+            <!-- Rangsangan: Logo 1 KOPERASI MAJU JAYA (DIPERBESAR & JELAS) -->
             <div class="p-5 bg-slate-50 border-2 border-indigo-100 rounded-2xl flex flex-col items-center">
               <span class="text-xs font-bold text-indigo-900 uppercase tracking-widest mb-3">Logo 1: Bentuk Pemilikan Perniagaan</span>
-              
-              <!-- SVG KOPERASI DIPERBESAR DAN JELAS DILIHAT -->
               <svg width="300" height="250" viewBox="0 0 320 270" class="border border-slate-200 rounded-2xl bg-white shadow-md p-2">
-                <!-- Bulatan Luar & Corak -->
                 <circle cx="160" cy="115" r="92" fill="#eff6ff" stroke="#1e3a8a" stroke-width="4" stroke-dasharray="8 4" />
                 <circle cx="160" cy="115" r="82" fill="#ffffff" stroke="#0f172a" stroke-width="2.5" />
-                
-                <!-- Bintang & Simbol Muafakat -->
                 <circle cx="160" cy="52" r="12" fill="#eab308" stroke="#ca8a04" stroke-width="2" />
                 <path d="M160 32 L160 42 M160 62 L160 72 M140 52 L150 52 M170 52 L180 52" stroke="#ca8a04" stroke-width="2.5" />
-                
-                <!-- Figuran Manusia Bersatu Padu (Koperasi) -->
                 <circle cx="160" cy="85" r="9" fill="#047857" />
                 <path d="M146 112 Q160 96 174 112" stroke="#047857" stroke-width="5" fill="none" stroke-linecap="round" />
                 <circle cx="132" cy="95" r="7" fill="#0284c7" />
                 <circle cx="188" cy="95" r="7" fill="#0284c7" />
-
-                <!-- Simbol Perniagaan / Bangunan -->
                 <rect x="110" y="125" width="28" height="24" fill="#f8fafc" stroke="#1e293b" stroke-width="2" />
                 <polygon points="110,125 124,115 138,125" fill="#3b82f6" />
                 <rect x="182" y="115" width="28" height="34" fill="#f8fafc" stroke="#1e293b" stroke-width="2" />
                 <line x1="187" y1="125" x2="205" y2="125" stroke="#1e293b" stroke-width="1.5" />
                 <line x1="187" y1="135" x2="205" y2="135" stroke="#1e293b" stroke-width="1.5" />
-
-                <!-- PITA / BANNER UTAMA KOPERASI (BESAR & TEBAL) -->
-                <path d="M25 210 L295 210 L280 252 L40 252 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.2))" />
-                
-                <!-- TULISAN KOPERASI DIBESARKAN DENGAN JELAS -->
-                <text x="160" y="234" text-anchor="middle" font-size="22" font-weight="900" fill="#ffffff" letter-spacing="4" font-family="sans-serif">
-                  KOPERASI
-                </text>
-                
-                <!-- TULISAN MAJU JAYA -->
+                <!-- BANNER KOPERASI DIBESARKAN -->
+                <path d="M25 210 L295 210 L280 252 L40 252 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2" />
+                <text x="160" y="234" text-anchor="middle" font-size="22" font-weight="900" fill="#ffffff" letter-spacing="4" font-family="sans-serif">KOPERASI</text>
                 <rect x="75" y="246" width="170" height="20" rx="4" fill="#eab308" />
-                <text x="160" y="260" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a" letter-spacing="2">
-                  MAJU JAYA
-                </text>
+                <text x="160" y="260" text-anchor="middle" font-size="12" font-weight="bold" fill="#0f172a" letter-spacing="2">MAJU JAYA</text>
               </svg>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Logo 1 menunjukkan sebuah bentuk pemilikan perniagaan. Jelaskan ciri-ciri bentuk pemilikan perniagaan tersebut. <span class="text-indigo-600 font-bold">[3 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Logo 1 menunjukkan sebuah bentuk pemilikan perniagaan. Jelaskan ciri-ciri bentuk pemilikan perniagaan tersebut. <span class="text-indigo-600 font-bold">[3 markah]</span>
+                </label>
+                <span id="badgeNilai_s1a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s1a" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500" placeholder="Jawapan anda..."></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Terangkan kelebihan syarikat sendirian berhad. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Terangkan kelebihan syarikat sendirian berhad. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s1b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s1b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500" placeholder="Jawapan anda..."></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (c) Huraikan skala perniagaan bagi pasaran antarabangsa. <span class="text-indigo-600 font-bold">[3 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (c) Huraikan skala perniagaan bagi pasaran antarabangsa. <span class="text-indigo-600 font-bold">[3 markah]</span>
+                </label>
+                <span id="badgeNilai_s1c" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s1c" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500" placeholder="Jawapan anda..."></textarea>
             </div>
 
             <!-- BUTANG SIMPAN SOALAN 1 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_1" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(1)" id="btn_soalan_1" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 1
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 1
               </button>
             </div>
           </div>
@@ -232,16 +271,22 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Bagaimanakah peranan kerajaan dalam mengatasi masalah tersebut. <span class="text-indigo-600 font-bold">[3 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Bagaimanakah peranan kerajaan dalam mengatasi masalah tersebut. <span class="text-indigo-600 font-bold">[3 markah]</span>
+                </label>
+                <span id="badgeNilai_s2a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s2a" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Jelaskan faktor sumber manusia yang boleh membantu meningkatkan prestasi sesebuah perniagaan. <span class="text-indigo-600 font-bold">[3 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Jelaskan faktor sumber manusia yang boleh membantu meningkatkan prestasi sesebuah perniagaan. <span class="text-indigo-600 font-bold">[3 markah]</span>
+                </label>
+                <span id="badgeNilai_s2b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s2b" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
@@ -249,21 +294,26 @@
               <label class="block text-sm font-semibold text-slate-800 mb-1">(c) Jelaskan ciri-ciri objektif berikut:</label>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-700">(i) Boleh dicapai [2 markah]</span>
-                  <textarea id="ans_s2c_i" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 mt-1"></textarea>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-bold text-slate-700">(i) Boleh dicapai [2 markah]</span>
+                    <span id="badgeNilai_s2c_i" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+                  </div>
+                  <textarea id="ans_s2c_i" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
                 <div>
-                  <span class="text-xs font-bold text-slate-700">(ii) Jangka masa [2 markah]</span>
-                  <textarea id="ans_s2c_ii" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 mt-1"></textarea>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-bold text-slate-700">(ii) Jangka masa [2 markah]</span>
+                    <span id="badgeNilai_s2c_ii" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+                  </div>
+                  <textarea id="ans_s2c_ii" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
               </div>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 2 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_2" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(2)" id="btn_soalan_2" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 2
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 2
               </button>
             </div>
           </div>
@@ -279,28 +329,36 @@
               <label class="block text-sm font-semibold text-slate-800 mb-1">(a) Jelaskan peranan bahagian fungsian berikut:</label>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
                 <div>
-                  <span class="text-xs font-bold text-slate-700">(i) Bahagian fungsian jualan [3 markah]</span>
-                  <textarea id="ans_s3a_i" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 mt-1"></textarea>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-bold text-slate-700">(i) Bahagian fungsian jualan [3 markah]</span>
+                    <span id="badgeNilai_s3a_i" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+                  </div>
+                  <textarea id="ans_s3a_i" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
                 <div>
-                  <span class="text-xs font-bold text-slate-700">(ii) Bahagian fungsian penyelidikan dan pembangunan (R&D) [3 markah]</span>
-                  <textarea id="ans_s3a_ii" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 mt-1"></textarea>
+                  <div class="flex justify-between items-center mb-1">
+                    <span class="text-xs font-bold text-slate-700">(ii) Bahagian R&D [3 markah]</span>
+                    <span id="badgeNilai_s3a_ii" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+                  </div>
+                  <textarea id="ans_s3a_ii" rows="3" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
                 </div>
               </div>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Terangkan kepentingan interaksi dengan organisasi luar kepada perniagaan. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Terangkan kepentingan interaksi dengan organisasi luar kepada perniagaan. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s3b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s3b" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 3 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_3" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(3)" id="btn_soalan_3" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 3
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 3
               </button>
             </div>
           </div>
@@ -318,24 +376,29 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Terangkan faktor yang mempengaruhi keputusan tersebut. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Terangkan faktor yang mempengaruhi keputusan tersebut. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s4a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s4a" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Mengapakah sumber fizikal perlu diuruskan dengan baik? <span class="text-indigo-600 font-bold">[6 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Mengapakah sumber fizikal perlu diuruskan dengan baik? <span class="text-indigo-600 font-bold">[6 markah]</span>
+                </label>
+                <span id="badgeNilai_s4b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s4b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 4 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_4" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(4)" id="btn_soalan_4" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 4
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 4
               </button>
             </div>
           </div>
@@ -352,24 +415,29 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Apakah jenis sumber pembiayaan tersebut. Berikan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Apakah jenis sumber pembiayaan tersebut. Berikan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s5a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s5a" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Jelaskan kegunaan Kunci Kira-kira kepada usahawan. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Jelaskan kegunaan Kunci Kira-kira kepada usahawan. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s5b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s5b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 5 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_5" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(5)" id="btn_soalan_5" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 5
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 5
               </button>
             </div>
           </div>
@@ -382,9 +450,12 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Bezakan aset semasa dengan aset bukan semasa. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Bezakan aset semasa dengan aset bukan semasa. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s6a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s6a" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
@@ -393,24 +464,29 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b)(i) Kenal pasti akta penubuhan perniagaan tersebut? <span class="text-indigo-600 font-bold">[1 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b)(i) Kenal pasti akta penubuhan perniagaan tersebut? <span class="text-indigo-600 font-bold">[1 markah]</span>
+                </label>
+                <span id="badgeNilai_s6b_i" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <input type="text" id="ans_s6b_i" class="w-full p-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500" />
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b)(ii) Jelaskan prosedur pemerbadanan perniagaan Bellez Sdn Bhd. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b)(ii) Jelaskan prosedur pemerbadanan perniagaan Bellez Sdn Bhd. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s6b_ii" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s6b_ii" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 6 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_6" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(6)" id="btn_soalan_6" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 6
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 6
               </button>
             </div>
           </div>
@@ -454,31 +530,39 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Berdasarkan graf Titik Pulang Modal, hitungkan titik pulang modal baharu jika harga jual seunit RM8.00 dan kos berubah seunit meningkat 30% daripada kos berubah seunit asal iaitu RM5.00. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Berdasarkan graf Titik Pulang Modal, hitungkan titik pulang modal baharu jika harga jual seunit RM8.00 dan kos berubah seunit meningkat 30% daripada kos berubah seunit asal iaitu RM5.00. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s7a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s7a" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Kesan daripada peningkatan kos berubah, Perniagaan Keropok Ainul terpaksa membuat beberapa perubahan. Cadangkan langkah yang sesuai untuk mengatasi masalah tersebut. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Kesan daripada peningkatan kos berubah, Perniagaan Keropok Ainul terpaksa membuat beberapa perubahan. Cadangkan langkah yang sesuai untuk mengatasi masalah tersebut. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s7b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s7b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (c) Sebagai pemilik, Pn. Ainul telah memilih pembiayaan luaran bagi mengembangkan perniagaannya. Wajarkah tindakan beliau?. Berikan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (c) Sebagai pemilik, Pn. Ainul telah memilih pembiayaan luaran bagi mengembangkan perniagaannya. Wajarkah tindakan beliau?. Berikan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s7c" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s7c" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 7 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_7" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(7)" id="btn_soalan_7" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 7
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 7
               </button>
             </div>
           </div>
@@ -524,31 +608,39 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Jelaskan sumbangan sektor perniagaan yang diusahakan oleh Ann Enterprise kepada negara. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Jelaskan sumbangan sektor perniagaan yang diusahakan oleh Ann Enterprise kepada negara. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s8a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s8a" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Terangkan ciri-ciri keperibadian Ann Maria. <span class="text-indigo-600 font-bold">[6 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Terangkan ciri-ciri keperibadian Ann Maria. <span class="text-indigo-600 font-bold">[6 markah]</span>
+                </label>
+                <span id="badgeNilai_s8b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s8b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (c) Anda bersetuju faktor luaran dapat membantu perniagaan Ann Enterprise dalam menyahut kempen kerajaan. Berikan justifikasi anda. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (c) Anda bersetuju faktor luaran dapat membantu perniagaan Ann Enterprise dalam menyahut kempen kerajaan. Berikan justifikasi anda. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s8c" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s8c" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 8 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_8" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(8)" id="btn_soalan_8" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 8
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 8
               </button>
             </div>
           </div>
@@ -561,35 +653,43 @@
             </div>
 
             <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 leading-relaxed">
-              <strong>SPAce Legasi PLT:</strong> Merupakan syarikat perisian komputer berasaskan AI. Mengadakan pertandingan automasi pejabat, bimbang idea ditiru pesaing, menghadapi isu pekerja muat turun perisian haram, menawarkan gaji kompetitif serta latihan peningkatan kemahiran (upskilling & reskilling).
+              <strong>SPAce Legasi PLT:</strong> Merupakan syarikat perisian komputer AI pejabat yang berdepan kebimbangan peniruan idea, isu pekerja muat turun perisian haram, menawarkan gaji kompetitif serta latihan kemahiran.
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Jelaskan ciri-ciri bentuk pemilikan perniagaan tersebut. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Jelaskan ciri-ciri bentuk pemilikan perniagaan tersebut. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s9a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s9a" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Bagaimanakah prosedur mengurus sumber teknologi yang perlu dilaksanakan oleh SPAce Legasi PLT. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Bagaimanakah prosedur mengurus sumber teknologi yang perlu dilaksanakan oleh SPAce Legasi PLT. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s9b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s9b" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (c) Pada pandangan anda, adakah aspek pengelolaan sumber manusia yang diamalkan berkesan untuk SPAce Legasi PLT?. Berikan komen. <span class="text-indigo-600 font-bold">[6 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (c) Pada pandangan anda, adakah aspek pengelolaan sumber manusia yang diamalkan berkesan untuk SPAce Legasi PLT?. Berikan komen. <span class="text-indigo-600 font-bold">[6 markah]</span>
+                </label>
+                <span id="badgeNilai_s9c" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s9c" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 9 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_9" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(9)" id="btn_soalan_9" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 9
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 9
               </button>
             </div>
           </div>
@@ -654,53 +754,66 @@
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (a) Terangkan faktor yang mendorong Encik Razif dalam memulakan perniagaan Kedai Perabot Makmur. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (a) Terangkan faktor yang mendorong Encik Razif dalam memulakan perniagaan Kedai Perabot Makmur. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s10a" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s10a" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (b) Hitungkan nisbah kecairan bagi Kedai Perabot Makmur. <span class="text-indigo-600 font-bold">[3 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (b) Hitungkan nisbah kecairan bagi Kedai Perabot Makmur. <span class="text-indigo-600 font-bold">[3 markah]</span>
+                </label>
+                <span id="badgeNilai_s10b" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s10b" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (c) Apakah agensi kerajaan yang sesuai untuk membiayai perniagaan Encik Razif? Berikan alasan. <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (c) Apakah agensi kerajaan yang sesuai untuk membiayai perniagaan Encik Razif? Berikan alasan. <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s10c" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s10c" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (d) Bagaimanakah MATRADE dapat membantu Kedai Perabot Makmur berkembang ke luar negara? <span class="text-indigo-600 font-bold">[4 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (d) Bagaimanakah MATRADE dapat membantu Kedai Perabot Makmur berkembang ke luar negara? <span class="text-indigo-600 font-bold">[4 markah]</span>
+                </label>
+                <span id="badgeNilai_s10d" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s10d" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
             <div>
-              <label class="block text-sm font-semibold text-slate-800 mb-1">
-                (e) Pada pendapat anda, kaedah pengiklanan yang manakah sesuai dengan perniagaan Encik Razif? Kemukakan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
-              </label>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-semibold text-slate-800">
+                  (e) Pada pendapat anda, kaedah pengiklanan yang manakah sesuai dengan perniagaan Encik Razif? Kemukakan alasan. <span class="text-indigo-600 font-bold">[5 markah]</span>
+                </label>
+                <span id="badgeNilai_s10e" class="hidden text-xs font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"></span>
+              </div>
               <textarea id="ans_s10e" rows="4" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500"></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 10 -->
-            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2">
+            <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_10" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(10)" id="btn_soalan_10" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan & Hantar Soalan 10
+                <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Simpan Soalan 10
               </button>
             </div>
           </div>
         </div>
 
-        <!-- BUTANG HANTAR KESELURUHAN KERTAS -->
-        <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 text-center space-y-3">
-          <p class="text-xs text-slate-500">Anda juga boleh menekan butang ini untuk menghantar keseluruhan jawapan sekaligus.</p>
+        <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 text-center space-y-3 no-print">
+          <p class="text-xs text-slate-500">Anda juga boleh menekan butang ini untuk menghantar keseluruhan kertas peperiksaan.</p>
           <button type="button" onclick="submitSemuaJawapan()" id="btnHantarSemua" class="px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
             <i class="fa-solid fa-paper-plane mr-2"></i> Hantar Semua Jawapan Peperiksaan
           </button>
@@ -708,22 +821,29 @@
       </form>
     </section>
 
-    <!-- 3. MOD GURU & PENANDAAN DENGAN SKEMA RASMI -->
+    <!-- 3. MOD GURU & PENANDAAN DENGAN CADANGAN AI BERASASKAN KATA KUNCI -->
     <section id="guruSection" class="hidden space-y-6">
       
-      <!-- Panel Pemilihan Murid -->
+      <!-- Panel Kawalan Guru -->
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
         <div class="flex flex-wrap justify-between items-center gap-4">
           <div>
-            <h2 class="text-xl font-black text-slate-900"><i class="fa-solid fa-clipboard-check text-amber-500 mr-2"></i>Mod Penandaan & Skema Guru</h2>
-            <p class="text-xs text-slate-500">Semak jawapan murid berpandukan cadangan pemarkahan rasmi SPM Pahang 2026.</p>
+            <h2 class="text-xl font-black text-slate-900 flex items-center">
+              <i class="fa-solid fa-robot text-amber-500 mr-2"></i> Mod Penandaan Pintar AI & Skema
+            </h2>
+            <p class="text-xs text-slate-500">
+              Sistem AI menganalisis kata kunci jawapan murid dan mengira cadangan markah secara automatik.
+            </p>
           </div>
           <div class="flex items-center space-x-2">
+            <button onclick="terapkanSemuaCadanganAI()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-black rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> ⚡ Terapkan Semua Cadangan AI
+            </button>
             <button onclick="tarikDariGoogleSheet()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition">
-              <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Jawapan dari Google Sheet
+              <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Google Sheet
             </button>
             <button onclick="cetakSlipMarkah()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow transition">
-              <i class="fa-solid fa-print mr-1.5"></i> Cetak Slip Keputusan
+              <i class="fa-solid fa-print mr-1.5"></i> Cetak Slip
             </button>
           </div>
         </div>
@@ -731,7 +851,7 @@
         <div class="mt-4 pt-4 border-t flex flex-wrap items-center gap-4">
           <div class="w-full sm:w-auto">
             <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Calon untuk Ditanda:</label>
-            <select id="selectMuridMenanda" onchange="muatJawapanMuridDipilih()" class="px-3.5 py-2.5 text-sm border rounded-xl bg-slate-50 font-bold text-slate-800 min-w-[300px]">
+            <select id="selectMuridMenanda" onchange="muatJawapanMuridDipilih()" class="px-3.5 py-2.5 text-sm border rounded-xl bg-slate-50 font-bold text-slate-800 min-w-[320px]">
               <option value="">-- Sila Pilih Calon --</option>
             </select>
           </div>
@@ -762,18 +882,18 @@
         </div>
       </div>
 
-      <!-- RUANG PENANDAAN DUA KAD (JAWAPAN VS SKEMA) -->
+      <!-- RUANG PENANDAAN DUA KAD (JAWAPAN + KATA KUNCI AI VS SKEMA) -->
       <div id="containerPenandaan" class="space-y-6"></div>
 
       <!-- ULASAN GURU & SIMPAN KE GOOGLE SHEET -->
       <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4">
         <div>
-          <label class="block text-sm font-bold text-slate-800 mb-1">Ulasan / Maklum Balas Guru:</label>
-          <textarea id="ulasanGuru" rows="3" class="w-full p-3 text-sm border rounded-xl focus:ring-2 focus:ring-amber-500" placeholder="Tuliskan ulasan pencapaian calon..."></textarea>
+          <label class="block text-sm font-bold text-slate-800 mb-1">Ulasan / Maklum Balas Guru kepada Murid:</label>
+          <textarea id="ulasanGuru" rows="3" class="w-full p-3 text-sm border rounded-xl focus:ring-2 focus:ring-amber-500" placeholder="Tuliskan ulasan pencapaian calon... Murid akan melihat ulasan ini di portal mereka."></textarea>
         </div>
         <div class="flex justify-end">
           <button onclick="simpanPemarkahanGuru()" class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-lg transition">
-            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Rekod Markah ke Google Sheet
+            <i class="fa-solid fa-cloud-arrow-up mr-2"></i> Rekod Markah & Hantar Keputusan ke Portal Murid
           </button>
         </div>
       </div>
@@ -805,7 +925,6 @@
       { nama: "TAN TAI FENG", ic: "090609011693" }
     ];
 
-    // Pemetaan Kunci Mengikut Nombor Soalan
     const SOALAN_MAP = {
       1: ["s1a", "s1b", "s1c"],
       2: ["s2a", "s2b", "s2c_i", "s2c_ii"],
@@ -819,161 +938,350 @@
       10: ["s10a", "s10b", "s10c", "s10d", "s10e"]
     };
 
+    // SKEMA PEMARKAHAN BESERTA KRITERIA KATA KUNCI UNTUK ANALISIS AI
     const SKEMA_DATA = {
       "s1a": {
-        tajuk: "Soalan 1(a) - Ciri-ciri Koperasi (Logo 1)",
+        tajuk: "Soalan 1(a) - Ciri Koperasi (Logo 1)",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah]\n• H1: Melaksanakan kegiatan ekonomi untuk memenuhi keperluan anggota [1m]\n• H1a: Membantu keperluan anggotanya / tingkatkan ekonomi anggota [1m]\n• H2/H2a: Aktiviti tidak berunsurkan politik / menjaga kebajikan anggota semata-mata [1m]\n• H3/H3a: Tertakluk kepada Akta Koperasi 1993 / undang-undang kecil koperasi [1m]\n• H4/H4a: Modal disumbangkan oleh anggota melalui yuran/syer keahlian [1m]\n• H5: Setiap anggota mempunyai hak untuk bersuara dan membuat keputusan [1m]\n• H6/H6a: Menanggung liabiliti terhad setakat modal dilaburkan sahaja [1m]`
+        kriteria: [
+          { words: ["ekonomi", "keperluan anggota"], label: "Kegiatan ekonomi keperluan anggota" },
+          { words: ["bukan politik", "tidak berunsurkan politik", "kebajikan anggota"], label: "Tidak berunsurkan politik / kebajikan" },
+          { words: ["akta koperasi", "akta koperasi 1993", "undang-undang kecil"], label: "Akta Koperasi / Undang-undang kecil" },
+          { words: ["modal", "yuran", "syer", "sumbangan anggota"], label: "Modal disumbangkan anggota" },
+          { words: ["hak bersuara", "membuat keputusan"], label: "Hak bersuara / membuat keputusan" },
+          { words: ["liabiliti terhad", "modal dilaburkan"], label: "Liabiliti terhad" }
+        ],
+        skema: `[Maksimum 3 Markah]\n• Kegiatan ekonomi memenuhi keperluan anggota [1m]\n• Aktiviti tidak berunsurkan politik / jaga kebajikan [1m]\n• Tertakluk Akta Koperasi 1993 / undang-undang kecil [1m]\n• Modal daripada yuran/syer keahlian [1m]\n• Hak bersuara & membuat keputusan [1m]\n• Liabiliti terhad [1m]`
       },
       "s1b": {
-        tajuk: "Soalan 1(b) - Kelebihan Syarikat Sendirian Berhad",
+        tajuk: "Soalan 1(b) - Kelebihan Syarikat Sdn Bhd",
         max: 4, bah: "A",
-        skema: `[Maksimum 4 Markah: Mana-mana 2F + 2H berpasangan]\n• F1: Modal lebih besar [1m] -> H1a/H1b: Lebih banyak modal dikumpul melalui terbitan syer [1m]\n• F2: Liabiliti terhad [1m] -> H2a/H2b: Pemegang syer hanya rugi setakat modal dilabur; harta peribadi selamat [1m]\n• F3: Hal ehwal syarikat dirahsiakan [1m] -> H3a: Laporan kewangan tidak perlu diumumkan kepada orang awam [1m]`
+        kriteria: [
+          { words: ["modal lebih besar", "terbitan syer", "banyak modal"], label: "Modal lebih besar (syer)" },
+          { words: ["liabiliti terhad", "rugi setakat modal", "harta peribadi"], label: "Liabiliti terhad" },
+          { words: ["dirahsiakan", "tidak diumumkan", "laporan kewangan"], label: "Hal ehwal kewangan dirahsiakan" }
+        ],
+        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Modal lebih besar -> Kumpul modal melalui terbitan syer [2m]\n• Liabiliti terhad -> Rugi setakat modal dilabur; harta peribadi selamat [2m]\n• Hal ehwal dirahsiakan -> Laporan kewangan tidak diumumkan kepada umum [2m]`
       },
       "s1c": {
-        tajuk: "Soalan 1(c) - Skala Perniagaan Antarabangsa",
+        tajuk: "Soalan 1(c) - Skala Antarabangsa",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah: 1F + 1H + 1C]\n• F1: Skala zon [1m] -> H1a: Pasaran fokus kepada kawasan zon tertentu [1m] -> C1: Contoh ASEAN [1m]\n• F2: Skala global [1m] -> H2a: Pasaran meluas merentasi sempadan dunia dipacu internet [1m] -> C1: Contoh pasaran global [1m]`
+        kriteria: [
+          { words: ["skala zon", "zon"], label: "Fakta Skala Zon" },
+          { words: ["kawasan tertentu", "pasaran tertentu", "asean"], label: "Huraian/Contoh Zon" },
+          { words: ["skala global", "global"], label: "Fakta Skala Global" },
+          { words: ["merentasi sempadan", "seluruh dunia", "internet"], label: "Huraian Global" }
+        ],
+        skema: `[Maksimum 3 Markah: 1F + 1H + 1C]\n• Skala zon: Pasaran kawasan tertentu (cth ASEAN) [2m/3m]\n• Skala global: Merentasi sempadan dunia dipacu teknologi/internet [2m/3m]`
       },
       "s2a": {
         tajuk: "Soalan 2(a) - Peranan Kerajaan Atasi Inflasi",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah]\n• H1: Menaikkan kadar faedah / dasar kewangan menguncup [1m]\n• H2: Menggalakkan masyarakat menyimpan wang dalam bank [1m]\n• H3: Mengawal kenaikan harga barang dan perkhidmatan [1m]\n• H4: Menggalakkan eksport barangan tempatan ke luar negara [1m]\n• H8: Melaksanakan dasar fiskal (meningkatkan cukai pendapatan) [1m]\n• H9: Menggalakkan pembelian barangan buatan tempatan [1m]`
+        kriteria: [
+          { words: ["kadar faedah", "dasar kewangan", "simpan wang"], label: "Dasar kewangan / faedah" },
+          { words: ["kawal harga", "dasar harga", "mengawal kenaikan harga"], label: "Kawalan harga barang" },
+          { words: ["dasar fiskal", "cukai pendapatan", "cukai"], label: "Dasar fiskal / cukai" },
+          { words: ["eksport", "barangan tempatan", "kurangkan import"], label: "Galak barangan tempatan / eksport" }
+        ],
+        skema: `[Maksimum 3 Markah]\n• Naikkan kadar faedah / dasar kewangan [1m]\n• Galakkan masyarakat simpan wang [1m]\n• Kawal kenaikan harga barangan [1m]\n• Laksana dasar fiskal (naik cukai) [1m]\n• Galak guna barangan tempatan / kurangkan import [1m]`
       },
       "s2b": {
         tajuk: "Soalan 2(b) - Faktor Sumber Manusia",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah]\n• H1: Tenaga kerja berkepakaran, berkemahiran, berpengalaman & berprestasi tinggi [1m]\n• H2: Sumber manusia yang bermotivasi, rajin dan berdisiplin tinggi [1m]\n• H3: Bilangan pekerja yang mencukupi untuk menampung kapasiti operasi [1m]\n• H4: Pekerja yang kreatif dan inovatif dalam menghasilkan penyelesaian [1m]`
+        kriteria: [
+          { words: ["berkepakaran", "berkemahiran", "berpengalaman", "terlatih"], label: "Berkepakaran / berkemahiran" },
+          { words: ["bermotivasi", "rajin", "berdisiplin"], label: "Bermotivasi / rajin" },
+          { words: ["mencukupi", "bilangan"], label: "Tenaga kerja mencukupi" },
+          { words: ["kreatif", "inovatif"], label: "Kreatif & inovatif" }
+        ],
+        skema: `[Maksimum 3 Markah]\n• Pekerja berkepakaran / berkemahiran / terlatih [1m]\n• Pekerja bermotivasi / rajin [1m]\n• Bilangan pekerja yang mencukupi [1m]\n• Pekerja yang kreatif dan inovatif [1m]`
       },
       "s2c_i": {
-        tajuk: "Soalan 2(c)(i) - Objektif: Boleh Dicapai",
+        tajuk: "Soalan 2(c)(i) - Boleh Dicapai",
         max: 2, bah: "A",
-        skema: `[Maksimum 2 Markah]\n• H1: Sasaran yang realistik dan tidak mustahil untuk dicapai [1m]\n• H1a: Menggembleng semua sumber dan keupayaan perniagaan yang ada [1m]\n• Cth: Meningkatkan jualan kasut sebanyak 10% setahun [1m]`
+        kriteria: [
+          { words: ["realistik", "tidak mustahil", "boleh dicapai"], label: "Sasaran realistik / tidak mustahil" },
+          { words: ["sumber yang ada", "tenaga", "contoh", "10%"], label: "Berasaskan sumber / contoh sesuai" }
+        ],
+        skema: `[Maksimum 2 Markah]\n• Sasaran yang realistik / tidak mustahil dicapai [1m]\n• Menggunakan sumber dan tenaga sepenuhnya [1m]`
       },
       "s2c_ii": {
-        tajuk: "Soalan 2(c)(ii) - Objektif: Jangka Masa",
+        tajuk: "Soalan 2(c)(ii) - Jangka Masa",
         max: 2, bah: "A",
-        skema: `[Maksimum 2 Markah]\n• H1: Mempunyai penetapan tempoh masa atau tarikh akhir yang jelas (Carta Gantt) [1m]\n• H2: Melibatkan jangka pendek (< setahun) atau jangka panjang (> 5 tahun) [1m]\n• Cth: Menyiapkan tempahan baju dalam tempoh 3 bulan [1m]`
+        kriteria: [
+          { words: ["tempoh masa", "tarikh", "carta gantt"], label: "Penetapan tempoh masa / tarikh" },
+          { words: ["jangka pendek", "jangka panjang", "3 bulan", "setahun"], label: "Jangka pendek / jangka panjang" }
+        ],
+        skema: `[Maksimum 2 Markah]\n• Tempoh masa / tarikh akhir ditetapkan dalam objektif [1m]\n• Melibatkan jangka pendek atau jangka panjang [1m]`
       },
       "s3a_i": {
         tajuk: "Soalan 3(a)(i) - Fungsian Jualan",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah]\n• Menjawab pertanyaan pelanggan berkaitan spesifikasi produk [1m]\n• Melakukan jualan secara bersemuka mahupun dalam talian [1m]\n• Menyediakan sebut harga dan rundingan terma bayaran / diskaun [1m]\n• Memberikan khidmat nasihat teknikal produk kepada pembeli [1m]`
+        kriteria: [
+          { words: ["menjawab pertanyaan", "spesifikasi"], label: "Menjawab pertanyaan produk" },
+          { words: ["jualan bersemuka", "dalam talian", "online"], label: "Jualan bersemuka / online" },
+          { words: ["sebut harga", "rundingan", "diskaun"], label: "Sebut harga / runding diskaun" },
+          { words: ["nasihat teknikal"], label: "Khidmat nasihat teknikal" }
+        ],
+        skema: `[Maksimum 3 Markah]\n• Menjawab pertanyaan pelanggan tentang barang [1m]\n• Menjalankan jualan bersemuka atau dalam talian [1m]\n• Sediakan sebut harga & rundingan terma bayaran [1m]`
       },
       "s3a_ii": {
         tajuk: "Soalan 3(a)(ii) - Fungsian R&D",
         max: 3, bah: "A",
-        skema: `[Maksimum 3 Markah]\n• Merancang aktiviti pembangunan dan inovasi produk baharu [1m]\n• Menambah baik reka bentuk dan kualiti produk sedia ada [1m]\n• Memastikan produk menepati kehendak pengguna secara kos efektif [1m]`
+        kriteria: [
+          { words: ["produk baharu", "inovasi"], label: "Pembangunan produk baharu" },
+          { words: ["menambah baik", "kualiti produk"], label: "Menambah baik kualiti produk" },
+          { words: ["kehendak pengguna", "kos efektif", "tidak membazir"], label: "Kos efektif / menepati pengguna" }
+        ],
+        skema: `[Maksimum 3 Markah]\n• Rancang pembangunan produk baharu [1m]\n• Tambah baik produk sedia ada [1m]\n• Pastikan produk berkualiti & kos efektif [1m]`
       },
       "s3b": {
-        tajuk: "Soalan 3(b) - Interaksi dengan Organisasi Luar",
+        tajuk: "Soalan 3(b) - Interaksi Organisasi Luar",
         max: 4, bah: "A",
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• F1: Mewujudkan jaringan perniagaan [1m] -> Kukuhkan operasi & kelangsungan pasaran [1m]\n• F2: Mengukuhkan hubungan sedia ada [1m] -> Mencapai matlamat perniagaan dengan lebih cekap [1m]\n• F3: Menjalin kerjasama strategik [1m] -> Perkongsian teknologi & sumber kepakaran [1m]\n• F4: Menambahkan sumber perniagaan [1m] -> Jaminan bekalan bahan mentah & pembiayaan lancar [1m]`
+        kriteria: [
+          { words: ["jaringan perniagaan", "kelangsungan"], label: "Mewujudkan jaringan perniagaan" },
+          { words: ["hubungan baik", "matlamat"], label: "Kukuhkan hubungan baik" },
+          { words: ["kerjasama strategik"], label: "Jalin kerjasama strategik" },
+          { words: ["menambah sumber", "bahan mentah", "pembiayaan"], label: "Menambah potensi sumber" }
+        ],
+        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Jaringan perniagaan -> kelangsungan perniagaan [2m]\n• Kerjasama strategik -> sinergi antara pihak [2m]\n• Tambah potensi sumber -> bekalan bahan mentah [2m]`
       },
       "s4a": {
-        tajuk: "Soalan 4(a) - Faktor Penentu Sistem Penggajian Ayu",
+        tajuk: "Soalan 4(a) - Faktor Penggajian Ayu",
         max: 4, bah: "A",
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• F1: Kemampuan organisasi [1m] -> Syarikat baharu kukuh kewangan dan menawarkan gaji lebih tinggi [1m]\n• F2: Faktor lokasi [1m] -> Lokasi tempat kerja baharu lebih dekat dengan rumah Ayu (jimat kos/masa) [1m]`
+        kriteria: [
+          { words: ["kemampuan organisasi", "gaji lebih tinggi", "kewangan kukuh"], label: "Kemampuan organisasi" },
+          { words: ["faktor lokasi", "dekat dengan rumah", "jarak"], label: "Faktor lokasi" }
+        ],
+        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Kemampuan organisasi: Syarikat baharu stabil & tawar gaji tinggi [2m]\n• Faktor lokasi: Tempat baharu lebih dekat dengan rumah [2m]`
       },
       "s4b": {
-        tajuk: "Soalan 4(b) - Pengurusan Sumber Fizikal",
+        tajuk: "Soalan 4(b) - Urus Sumber Fizikal",
         max: 6, bah: "A",
-        skema: `[Maksimum 6 Markah]\n• Mengambil insurans perlindungan risiko kebakaran dan kecurian [1m]\n• Memasang alat kawalan keselamatan (CCTV, pemadam api, alat penggera) [1m]\n• Menjalankan penyelenggaraan dan baik pulih berkala mengikut jadual [1m]\n• Memastikan mesin sentiasa beroperasi dengan lancar bagi mengelak kerosakan mengejut [1m]\n• Menjamin produktiviti pengeluaran yang konsisten dan keselamatan pekerja [1m]`
+        kriteria: [
+          { words: ["insurans", "kebakaran", "kecurian", "pampasan"], label: "Ambil insurans perlindungan" },
+          { words: ["kawalan keselamatan", "cctv", "pemadam api", "penggera"], label: "Kawalan keselamatan (CCTV/Alat)" },
+          { words: ["penyelenggaraan", "baik pulih", "berkala", "jadual"], label: "Penyelenggaraan berkala" },
+          { words: ["kelancaran", "produktiviti", "cegah kerosakan"], label: "Jamin kelancaran produktiviti" }
+        ],
+        skema: `[Maksimum 6 Markah]\n• Ambil insurans lindungi risiko kebakaran/kecurian [2m]\n• Lengkapkan bangunan dengan alat kawalan (CCTV, alat pemadam) [2m]\n• Penyelenggaraan & baik pulih berkala ikut jadual [2m]\n• Jamin operasi lancar & elak kerosakan mengejut [2m]`
       },
       "s5a": {
-        tajuk: "Soalan 5(a) - Pembiayaan Ar-Rahnu Pn. Zehan",
+        tajuk: "Soalan 5(a) - Pembiayaan Ar-Rahnu",
         max: 5, bah: "A",
-        skema: `[Maksimum 5 Markah: 1F + 4 Alasan]\n• F1: Ar-Rahnu (Pajak Gadai Islam) [1m]\nAlasan:\n• H1: Mencagarkan barang berharga miliknya [1m]\n• H2: Proses kelulusan pantas memperoleh wang tunai [1m]\n• H3: Patuh syariah tanpa faedah (hanya upah simpanan) [1m]\n• H4: Barang berharga boleh ditebus semula selepas hutang dilangsaikan [1m]\n• H5: Margin pinjaman tinggi antara 75% hingga 90% daripada nilai taksiran [1m]`
+        kriteria: [
+          { words: ["ar-rahnu", "rahnu", "pajak gadai islam"], label: "Fakta Ar-Rahnu" },
+          { words: ["cagar", "barang berharga", "emas"], label: "Mencagarkan barang berharga" },
+          { words: ["mudah", "pantas", "tunai"], label: "Pantas dapat wang tunai" },
+          { words: ["patuh syariah", "tiada faedah", "upah simpan"], label: "Patuh syariah / upah simpan" },
+          { words: ["tebus semula"], label: "Boleh tebus semula barang" },
+          { words: ["margin", "75%", "90%"], label: "Margin pinjaman" }
+        ],
+        skema: `[Maksimum 5 Markah: 1F + 4H]\n• Ar-Rahnu [1m]\n• Cagarkan barang berharga [1m]\n• Mudah & pantas dapat tunai [1m]\n• Patuh syariah / tanpa riba [1m]\n• Barang boleh ditebus semula [1m]`
       },
       "s5b": {
-        tajuk: "Soalan 5(b) - Kegunaan Kunci Kira-kira",
+        tajuk: "Soalan 5(b) - Kunci Kira-kira",
         max: 5, bah: "A",
-        skema: `[Maksimum 5 Markah]\n• Mengetahui kedudukan kewangan perniagaan pada tarikh tertentu [1m]\n• Mengetahui jumlah aset semasa dan aset bukan semasa perniagaan [1m]\n• Mengetahui tanggungan liabiliti semasa dan bukan semasa kepada pihak luar [1m]\n• Mengetahui nilai ekuiti pemilik, modal permulaan dan keuntungan perniagaan [1m]\n• Menilai kecairan tunai bagi menyelesaikan obligasi jangka pendek [1m]`
+        kriteria: [
+          { words: ["kedudukan kewangan"], label: "Kedudukan kewangan perniagaan" },
+          { words: ["aset", "aset semasa", "aset bukan semasa"], label: "Komponen aset" },
+          { words: ["tanggungan", "liabiliti", "hutang"], label: "Tanggungan hutang / liabiliti" },
+          { words: ["ekuiti pemilik", "modal", "untung bersih"], label: "Ekuiti pemilik & modal" },
+          { words: ["kecairan"], label: "Tahap kecairan tunai" }
+        ],
+        skema: `[Maksimum 5 Markah]\n• Mengetahui kedudukan kewangan perniagaan [1m]\n• Mengetahui aset perniagaan [1m]\n• Mengetahui tanggungan liabiliti/hutang [1m]\n• Mengetahui ekuiti pemilik/modal [1m]\n• Menilai kecairan [1m]`
       },
       "s6a": {
-        tajuk: "Soalan 6(a) - Beza Aset Semasa & Aset Bukan Semasa",
+        tajuk: "Soalan 6(a) - Beza Aset Semasa & Bukan Semasa",
         max: 4, bah: "A",
-        skema: `[Maksimum 4 Markah: Mana-mana 2 perbezaan sepadan]\n• Hayat Penggunaan: Aset semasa < setahun | Aset bukan semasa > setahun [2m]\n• Tahap Kecairan: Aset semasa kecairan tinggi (mudah jadi tunai) | Bukan semasa rendah [2m]\n• Contoh: Aset semasa (Tunai, Stok, ABT) | Bukan semasa (Mesin, Bangunan, Lori) [2m]`
+        kriteria: [
+          { words: ["kurang setahun", "kurang 1 tahun"], label: "Hayat Aset Semasa < 1 tahun" },
+          { words: ["lebih setahun", "lebih 1 tahun"], label: "Hayat Bukan Semasa > 1 tahun" },
+          { words: ["kecairan tinggi"], label: "Kecairan tinggi (Semasa)" },
+          { words: ["kecairan rendah"], label: "Kecairan rendah (Bukan Semasa)" },
+          { words: ["tunai", "stok", "penghutang"], label: "Contoh Aset Semasa" },
+          { words: ["kenderaan", "mesin", "bangunan"], label: "Contoh Bukan Semasa" }
+        ],
+        skema: `[Maksimum 4 Markah]\n• Hayat: Semasa < 1 tahun | Bukan semasa > 1 tahun [2m]\n• Kecairan: Semasa tinggi | Bukan semasa rendah [2m]`
       },
       "s6b_i": {
-        tajuk: "Soalan 6(b)(i) - Akta Penubuhan Syarikat",
+        tajuk: "Soalan 6(b)(i) - Akta Syarikat",
         max: 1, bah: "A",
-        skema: `• Akta Syarikat 1965 / Akta Syarikat 2016 [1m]`
+        kriteria: [
+          { words: ["akta syarikat 1965", "akta syarikat 2016", "akta syarikat"], label: "Akta Syarikat" }
+        ],
+        skema: `• Akta Syarikat 1965 / 2016 [1m]`
       },
       "s6b_ii": {
         tajuk: "Soalan 6(b)(ii) - Prosedur Pemerbadanan Syarikat",
         max: 5, bah: "A",
-        skema: `[Maksimum 5 Markah]\n• H1: Membuat permohonan carian nama syarikat dan kelulusan daripada SSM [1m]\n• H2: Mengisi Borang Permohonan Pendaftaran Sesebuah Syarikat (Seksyen 14) [1m]\n• H3: Melengkapkan butiran pemegang syer, pengarah dan jenis perniagaan [1m]\n• H4: Menerima Notis Pemerbadanan Syarikat daripada SSM [1m]\n• H5: Melantik setiausaha syarikat bertauliah dalam tempoh 30 hari selepas pemerbadanan [1m]`
+        kriteria: [
+          { words: ["carian nama", "kelulusan nama", "ssm"], label: "Permohonan carian nama SSM" },
+          { words: ["borang", "permohonan pendaftaran", "seksyen 14"], label: "Borang Seksyen 14" },
+          { words: ["butiran pemegang", "alamat berdaftar", "jenis perniagaan"], label: "Lengkapkan butiran syarikat" },
+          { words: ["notis pemerbadanan"], label: "Notis Pemerbadanan SSM" },
+          { words: ["setiausaha syarikat", "30 hari"], label: "Lantik Setiausaha Syarikat 30 hari" }
+        ],
+        skema: `[Maksimum 5 Markah]\n• Carian & kelulusan nama SSM [1m]\n• Isi Borang Pendaftaran (Seksyen 14) [1m]\n• Lengkapkan butiran pemegang syer & perniagaan [1m]\n• Terima Notis Pemerbadanan SSM [1m]\n• Lantik Setiausaha Syarikat dlm 30 hari [1m]`
       },
       "s7a": {
-        tajuk: "Soalan 7(a) - Kiraan Titik Pulang Modal Baharu",
+        tajuk: "Soalan 7(a) - Hitung TPM Baharu",
         max: 5, bah: "B",
-        skema: `[5 Markah Lengkap]\n1. Kos berubah seunit baharu:\n   = RM5.00 + (RM5.00 × 30%) = RM5.00 + RM1.50 = RM6.50 [2m]\n2. Formula TPM: Kos Tetap / (Harga Jual Seunit - Kos Berubah Seunit) [1m]\n3. Pengiraan:\n   = RM12,000 / (RM8.00 - RM6.50) [1m]\n   = RM12,000 / RM1.50\n   = 8,000 unit [1m]`
+        kriteria: [
+          { words: ["6.50", "rm6.50", "rm 6.50"], label: "Kos Berubah Baru = RM6.50" },
+          { words: ["12000", "12 000"], label: "Kos Tetap = RM12,000" },
+          { words: ["1.50", "rm1.50"], label: "Margin Caruman = RM1.50" },
+          { words: ["8000", "8 000 unit", "8000 unit"], label: "TPM Baru = 8,000 unit" }
+        ],
+        skema: `[5 Markah Lengkap]\n• Kos berubah baru: RM5.00 + RM1.50 = RM6.50 [2m]\n• Formula TPM: Kos Tetap / (Harga Jual - Kos Berubah) [1m]\n• Pengiraan: RM12,000 / (RM8 - RM6.50) [1m]\n• Jawapan: 8,000 unit [1m]`
       },
       "s7b": {
-        tajuk: "Soalan 7(b) - Langkah Atasi Peningkatan Kos Berubah",
+        tajuk: "Soalan 7(b) - Langkah Atasi Kos Berubah",
         max: 5, bah: "B",
-        skema: `[Maksimum 5 Markah]\n• Mencari pembekal alternatif yang menawarkan harga bahan mentah lebih murah [1m]\n• Merundingkan diskaun belian pukal dengan pembekal [1m]\n• Menggunakan teknologi moden untuk mengurangkan sisa buangan pemprosesan [1m]\n• Menggiatkan aktiviti promosi dan meluaskan saluran pasaran [1m]\n• Mengkaji semula proses pengeluaran agar lebih efisien [1m]`
+        kriteria: [
+          { words: ["pembekal yang lebih murah", "pembekal murah"], label: "Cari pembekal murah" },
+          { words: ["rundingan semula", "kontrak", "diskaun pukal"], label: "Rundingan kontrak / diskaun" },
+          { words: ["teknologi moden", "mesin"], label: "Guna teknologi elak pembaziran" },
+          { words: ["r&d", "penyelidikan"], label: "R&D formula kos efektif" },
+          { words: ["promosi jualan", "diskaun harga"], label: "Tingkatkan promosi jualan" }
+        ],
+        skema: `[Maksimum 5 Markah]\n• Cari pembekal bahan mentah lebih murah [1m]\n• Runding semula kontrak belian pukal [1m]\n• Guna teknologi kurangkan sisa [1m]\n• Tingkatkan aktiviti promosi & jualan [1m]`
       },
       "s7c": {
         tajuk: "Soalan 7(c) - Kewajaran Pembiayaan Luaran",
         max: 5, bah: "B",
-        skema: `[Maksimum 5 Markah: Pendirian 1m + 4 Alasan]\n• Pendirian: Wajar [1m]\nAlasan:\n• Jumlah pinjaman boleh disesuaikan mengikut keperluan modal yang besar [1m]\n• Tempoh bayaran balik yang fleksibel dan ansuran bulanan berpatutan [1m]\n• Kadar faedah rendah / tiada faedah ketat melalui agensi kerajaan [1m]\n• Bimbingan keusahawanan serta latihan pengurusan disediakan oleh agensi [1m]`
+        kriteria: [
+          { words: ["wajar"], label: "Pendirian: Wajar" },
+          { words: ["agensi kerajaan", "institusi kewangan", "bank"], label: "Sumber agensi/bank" },
+          { words: ["tempoh bayaran", "fleksibel"], label: "Tempoh bayar balik fleksibel" },
+          { words: ["faedah rendah", "tiada faedah", "tanpa faedah"], label: "Faedah berpatutan / rendah" },
+          { words: ["latihan", "khidmat nasihat"], label: "Bimbingan & latihan keusahawanan" }
+        ],
+        skema: `[Maksimum 5 Markah: Pendirian 1m + 4 Alasan]\n• Wajar [1m]\n• Pinjaman mengikut keperluan modal besar [1m]\n• Ansuran berpatutan & tempoh fleksibel [1m]\n• Kadar faedah rendah [1m]\n• Bimbingan keusahawanan disediakan [1m]`
       },
       "s8a": {
         tajuk: "Soalan 8(a) - Sumbangan Ann Enterprise",
         max: 4, bah: "B",
-        skema: `[Maksimum 4 Markah]\n• Menjana pendapatan negara melalui aliran masuk pertukaran mata wang asing [1m]\n• Membuka peluang pekerjaan kepada penduduk tempatan sebagai pemandu pelancong [1m]\n• Memperkenalkan kekayaan budaya etnik Sarawak ke peringkat antarabangsa [1m]\n• Merangsang pertumbuhan sektor perhotelan, kraftangan dan pengangkutan [1m]`
+        kriteria: [
+          { words: ["pendapatan negara", "mata wang asing", "wang asing"], label: "Aliran masuk mata wang asing" },
+          { words: ["peluang pekerjaan", "pemandu pelancong", "taraf hidup"], label: "Peluang pekerjaan tempatan" },
+          { words: ["budaya", "sarawak", "tempat menarik", "makanan"], label: "Promosi budaya & warisan Sarawak" },
+          { words: ["sektor", "hotel", "pengangkutan"], label: "Rangsang sektor rantaian" }
+        ],
+        skema: `[Maksimum 4 Markah]\n• Jana pendapatan negara (mata wang asing) [1m]\n• Sedia peluang pekerjaan (pemandu pelancong) [1m]\n• Promosi budaya etnik Sarawak ke dunia [1m]\n• Rangsang sektor hotel & pengangkutan [1m]`
       },
       "s8b": {
-        tajuk: "Soalan 8(b) - Ciri Keperibadian Ann Maria",
+        tajuk: "Soalan 8(b) - Ciri Usahawan Ann Maria",
         max: 6, bah: "B",
-        skema: `[Maksimum 6 Markah: Mana-mana 3F + 3H berpasangan]\n• F1: Kreatif & inovatif [1m] -> Pakej pelancongan komprehensif & promosi digital [1m]\n• F2: Berani mengambil risiko [1m] -> Menjalin kolaborasi strategik industri berskala besar [1m]\n• F3: Pandai mengambil peluang [1m] -> Memanfaatkan Tahun Melawat Malaysia 2026 [1m]\n• F4: Fleksibel [1m] -> Menyesuaikan tawaran pakej dengan kehendak pelancong [1m]`
+        kriteria: [
+          { words: ["kreatif", "inovatif", "pakej komprehensif"], label: "Kreatif & inovatif" },
+          { words: ["berani mengambil risiko", "kolaborasi"], label: "Berani mengambil risiko" },
+          { words: ["pandai mengambil peluang", "tahun melawat malaysia"], label: "Pandai mengambil peluang" },
+          { words: ["fleksibel", "menyesuaikan"], label: "Fleksibel" }
+        ],
+        skema: `[Maksimum 6 Markah: 3F + 3H berpasangan]\n• Kreatif & inovatif -> Tawar pakej komprehensif [2m]\n• Pandai ambil peluang -> Rebut Tahun Melawat Malaysia [2m]\n• Berani ambil risiko -> Jalin kolaborasi hotel/resort [2m]`
       },
       "s8c": {
-        tajuk: "Soalan 8(c) - Faktor Luaran Membantu Perniagaan",
+        tajuk: "Soalan 8(c) - Faktor Luaran",
         max: 5, bah: "B",
-        skema: `[Maksimum 5 Markah]\n• Kemajuan teknologi memudahkan promosi digital secara meluas ke peringkat global [1m]\n• Kestabilan politik meningkatkan keyakinan pelancong asing berkunjung [1m]\n• Dasar kerajaan yang memberi sokongan insentif kempen Tahun Melawat Malaysia 2026 [1m]\n• Keunikan sosiobudaya etnik Sarawak menjadi tarikan pelancong [1m]`
+        kriteria: [
+          { words: ["teknologi", "promosi digital", "pemasaran"], label: "Faktor teknologi" },
+          { words: ["politik", "stabil"], label: "Faktor kestabilan politik" },
+          { words: ["dasar kerajaan", "insentif"], label: "Dasar sokongan kerajaan" },
+          { words: ["sosiobudaya", "etnik"], label: "Faktor sosiobudaya" },
+          { words: ["ekonomi", "kukuh"], label: "Kestabilan ekonomi" }
+        ],
+        skema: `[Maksimum 5 Markah]\n• Teknologi: Promosi meluas di media digital [1m]\n• Politik: Negara stabil tarik pelancong asing [1m]\n• Dasar kerajaan: Insentif kempen pelancongan [1m]\n• Sosiobudaya: Kepelbagaian etnik tarikan unik [1m]`
       },
       "s9a": {
-        tajuk: "Soalan 9(a) - Ciri-ciri Pemilikan PLT",
+        tajuk: "Soalan 9(a) - Ciri PLT",
         max: 5, bah: "B",
-        skema: `[Maksimum 5 Markah]\n• Entiti berasingan antara pemilik dan perniagaan [1m]\n• Boleh memiliki aset, menyaman atau disaman atas nama syarikat [1m]\n• Liabiliti terhad setakat modal yang disumbangkan [1m]\n• Hayat berterusan walaupun rakan kongsi meninggal dunia [1m]\n• Bilangan rakan kongsi sekurang-kurangnya 2 orang tanpa had maksimum [1m]`
+        kriteria: [
+          { words: ["entiti berasingan", "menyaman", "disaman"], label: "Entiti berasingan" },
+          { words: ["liabiliti terhad", "modal"], label: "Liabiliti terhad" },
+          { words: ["hayat berterusan"], label: "Hayat berterusan" },
+          { words: ["rakan kongsi", "2 orang"], label: "Keanggotaan rakan kongsi" }
+        ],
+        skema: `[Maksimum 5 Markah]\n• Entiti berasingan (hak saman/disaman) [2m]\n• Liabiliti terhad setakat modal [2m]\n• Hayat berterusan [1m]`
       },
       "s9b": {
-        tajuk: "Soalan 9(b) - Prosedur Mengurus Sumber Teknologi",
+        tajuk: "Soalan 9(b) - Prosedur Sumber Teknologi",
         max: 4, bah: "B",
-        skema: `[Maksimum 4 Markah]\n• Mendaftarkan Hak Cipta Terpelihara melalui Perbadanan Harta Intelek Malaysia (MyIPO) [1m]\n• Mendapat perlindungan undang-undang di bawah Akta Hak Cipta 1987 [1m]\n• Menjamin hak eksklusif terhadap perisian automasi AI ciptaan syarikat [1m]\n• Menghalang peniruan karya oleh pihak pesaing [1m]`
+        kriteria: [
+          { words: ["hak cipta terpelihara", "hak eksklusif"], label: "Daftar Hak Cipta Terpelihara" },
+          { words: ["akta hak cipta 1987", "akta hak cipta"], label: "Akta Hak Cipta 1987" },
+          { words: ["myipo"], label: "Permohonan ke MyIPO" },
+          { words: ["menghalang peniruan", "melindungi"], label: "Halang peniruan pesaing" }
+        ],
+        skema: `[Maksimum 4 Markah]\n• Daftar Hak Cipta Terpelihara di MyIPO [1m]\n• Perlindungan Akta Hak Cipta 1987 [1m]\n• Hak eksklusif kepada pencipta sistem AI [1m]\n• Lindungi karya daripada ditiru pesaing [1m]`
       },
       "s9c": {
         tajuk: "Soalan 9(c) - Pengelolaan Sumber Manusia PLT",
         max: 6, bah: "B",
-        skema: `[Maksimum 6 Markah: Berikan pendirian berkesan/tidak berkesan beserta alasan]\nBERKESAN:\n• Gaji kompetitif menarik bakat mahir dan meningkatkan motivasi pekerja [1m]\n• Pertandingan inovasi memberi ganjaran kepada pekerja kreatif [1m]\n• Latihan upskilling & reskilling menaik taraf kemahiran kod atur cara pekerja [1m]\nTIDAK BERKESAN:\n• Masih ada isu pelanggaran integriti memuat turun perisian tidak sah [1m]\n• Penambahan pekerja meningkatkan kos sedangkan pekerja lama belum cekap [1m]`
+        kriteria: [
+          { words: ["ya", "berkesan"], label: "Pendirian Berkesan" },
+          { words: ["gaji yang kompetitif", "gaji kompetitif", "motivasi"], label: "Gaji kompetitif naikkan motivasi" },
+          { words: ["ganjaran", "pertandingan", "inovasi"], label: "Ganjaran galak inovasi" },
+          { words: ["latihan", "upskilling", "reskilling"], label: "Latihan upskilling/reskilling" },
+          { words: ["tidak", "kurang mahir", "perisian tidak sah", "sop"], label: "Kritikan integriti/perisian haram" }
+        ],
+        skema: `[Maksimum 6 Markah: Berikan komen matang]\n• Gaji kompetitif menarik bakat & tingkatkan motivasi [1m]\n• Ganjaran pertandingan menggalakkan inovasi [1m]\n• Latihan upskilling & reskilling baiki kemahiran AI [1m]\n• Namun isu pekerja guna perisian tidak sah jejas integriti [1m]`
       },
       "s10a": {
-        tajuk: "Soalan 10(a) - Faktor Pendorong Encik Razif",
+        tajuk: "Soalan 10(a) - Pendorong Encik Razif",
         max: 4, bah: "C",
-        skema: `[Maksimum 4 Markah: Mana-mana 2F + 2H berpasangan]\n• F1: Modal [1m] -> Mempunyai wang simpanan sendiri sebanyak RM50,000 [1m]\n• F2: Kemahiran / Pengalaman [1m] -> Minat dalam pertukangan kayu & berpengalaman di kilang perabot [1m]\n• F3: Lokasi [1m] -> Beroperasi di bandar Kuantan yang mempunyai sasaran pasaran meluas [1m]`
+        kriteria: [
+          { words: ["modal", "simpanan", "50,000", "50000"], label: "Modal simpanan RM50,000" },
+          { words: ["kemahiran", "minat", "pengalaman", "kilang perabot"], label: "Minat & pengalaman pertukangan" },
+          { words: ["lokasi", "kuantan", "strategik"], label: "Lokasi bandar Kuantan" }
+        ],
+        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Modal: Simpanan sendiri RM50,000 [2m]\n• Kemahiran: Minat pertukangan kayu & pengalaman kerja kilang [2m]\n• Lokasi: Beroperasi di bandar Kuantan [2m]`
       },
       "s10b": {
-        tajuk: "Soalan 10(b) - Kiraan Nisbah Kecairan (Nisbah Semasa)",
+        tajuk: "Soalan 10(b) - Nisbah Kecairan (Nisbah Semasa)",
         max: 3, bah: "C",
-        skema: `[3 Markah Lengkap]\n1. Formula: Nisbah Semasa = Aset Semasa / Liabiliti Semasa [1m]\n2. Pengiraan:\n   • Aset Semasa = RM25,000 + RM80,000 + RM15,000 + RM13,000 = RM133,000\n   • Liabiliti Semasa = RM20,000 + RM15,000 + RM5,000 + RM3,000 = RM43,000 [1m]\n   = RM133,000 / RM43,000\n3. Jawapan: 3.09 : 1 [1m]`
+        kriteria: [
+          { words: ["nisbah semasa", "aset semasa / liabiliti semasa", "aset semasa"], label: "Formula Nisbah Semasa" },
+          { words: ["133,000", "133000"], label: "Aset Semasa = RM133,000" },
+          { words: ["43,000", "43000"], label: "Liabiliti Semasa = RM43,000" },
+          { words: ["3.09", "3.09:1", "3.09 : 1"], label: "Jawapan: 3.09 : 1" }
+        ],
+        skema: `[3 Markah Lengkap]\n• Formula: Aset Semasa / Liabiliti Semasa [1m]\n• RM133,000 / RM43,000 [1m]\n• Jawapan: 3.09 : 1 [1m]`
       },
       "s10c": {
-        tajuk: "Soalan 10(c) - Agensi Kerajaan Pembiayaan",
+        tajuk: "Soalan 10(c) - Agensi Pembiayaan",
         max: 4, bah: "C",
-        skema: `[Maksimum 4 Markah: 1 Agensi + 3 Alasan]\nPILIHAN 1: Majlis Amanah Rakyat (MARA) [1m]\n• Memenuhi syarat usahawan Bumiputera [1m]\n• Skim Pembiayaan Am/SPiM menepati modal diperlukan RM200,000 [1m]\n• Membantu membeli mesin pemotong kayu moden dan menyewa gudang penyimpanan [1m]\nATAU PILIHAN 2: PUNB (Skim PROSPER) [1m]`
+        kriteria: [
+          { words: ["mara", "majlis amanah rakyat", "punb"], label: "Agensi MARA / PUNB" },
+          { words: ["bumiputera"], label: "Syarat Bumiputera" },
+          { words: ["mesin", "gudang", "modal tambahan", "200,000", "200000"], label: "Sesuai modal RM200,000 beli mesin" },
+          { words: ["spim", "splim", "prosper"], label: "Skim pembiayaan agensi" }
+        ],
+        skema: `[Maksimum 4 Markah: 1 Agensi + 3 Alasan]\n• MARA / PUNB [1m]\n• Layak kerana usahawan Bumiputera [1m]\n• Skim pembiayaan sesuai modal RM200,000 [1m]\n• Beli mesin moden & sewa gudang [1m]`
       },
       "s10d": {
-        tajuk: "Soalan 10(d) - Bantuan MATRADE Ke Luar Negara",
+        tajuk: "Soalan 10(d) - Bantuan MATRADE",
         max: 4, bah: "C",
-        skema: `[Maksimum 4 Markah]\n• Menemukan perniagaan tempatan dengan pengimport dari Singapura dan Brunei [1m]\n• Mengendalikan misi perdagangan antarabangsa ke luar negara [1m]\n• Mengatur penyertaan dalam ekspo perdagangan perabot antarabangsa [1m]\n• Membekalkan maklumat risikan pasaran dan khidmat nasihat eksport [1m]`
+        kriteria: [
+          { words: ["pasaran baharu", "mencari kawasan"], label: "Cari pasaran baharu luar negara" },
+          { words: ["menemukan pengeksport", "pengimport", "singapura", "brunei"], label: "Temukan pengimport Singapura/Brunei" },
+          { words: ["misi perdagangan"], label: "Misi perdagangan luar negara" },
+          { words: ["pameran perdagangan antarabangsa", "promosi antarabangsa"], label: "Pameran antarabangsa" }
+        ],
+        skema: `[Maksimum 4 Markah]\n• Cari pasaran eksport baharu [1m]\n• Temukan pengeksport dengan pengimport luar [1m]\n• Anjurkan misi perdagangan antarabangsa [1m]\n• Sertai pameran perdagangan perabot dunia [1m]`
       },
       "s10e": {
         tajuk: "Soalan 10(e) - Pilihan Kaedah Pengiklanan",
         max: 5, bah: "C",
-        skema: `[Maksimum 5 Markah: Pilihan 1m + 4 Alasan]\nPILIHAN: Media Elektronik [1m]\n• Liputan meluas merentasi sempadan hingga ke Singapura dan Brunei 24 jam [1m]\n• Mampu memaparkan audio, video visual perabot yang moden dan interaktif [1m]\n• Kos periklanan media sosial lebih jimat berbanding risalah cetak [1m]\n• Wujud interaksi terus bersama bakal pembeli secara masa nyata [1m]\n(Pilihan Media Cetak juga diterima sekiranya alasan munasabah)`
+        kriteria: [
+          { words: ["media elektronik", "elektronik"], label: "Pilihan Media Elektronik" },
+          { words: ["liputan meluas", "24 jam", "singapura", "brunei"], label: "Liputan global 24 jam" },
+          { words: ["audio", "video", "visual", "gambar"], label: "Video/Audio visual menarik" },
+          { words: ["kos rendah", "jimat"], label: "Kos lebih murah & berkesan" },
+          { words: ["interaksi", "dua hala"], label: "Wujud interaksi pelanggan" },
+          { words: ["media cetak", "terperinci", "disimpan"], label: "Pilihan Media Cetak (Alternatif)" }
+        ],
+        skema: `[Maksimum 5 Markah: Pilihan 1m + 4 Alasan]\n• Media Elektronik [1m]\n• Liputan meluas hingga Singapura & Brunei [1m]\n• Papar audio, video visual perabot menarik [1m]\n• Kos lebih rendah berbanding media cetak [1m]\n• Beroperasi 24 jam & wujud interaksi [1m]`
       }
     };
 
@@ -985,7 +1293,6 @@
       isiDropdownMurid();
       binaBorangPenandaanGuru();
 
-      // Simpan automatik ke LocalStorage setiap kali murid menaip
       document.querySelectorAll("#soalanForm textarea, #soalanForm input").forEach(el => {
         el.addEventListener("input", simpanAutoLocal);
       });
@@ -1045,7 +1352,7 @@
         
         const btn = document.getElementById("btnLoginMurid");
         btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyemak kemajuan soalan...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memuatkan data peperiksaan...';
 
         document.getElementById("loginSection").classList.add("hidden");
         document.getElementById("examSection").classList.remove("hidden");
@@ -1053,14 +1360,11 @@
         document.getElementById("badgeNama").textContent = currentUser.nama;
         document.getElementById("badgePeranan").textContent = "CALON SPM";
 
-        // 1. Muat dahulu dari storan setempat
         muatAutoLocal();
-
-        // 2. Tarik kemajuan jawapan terdahulu terus dari Google Sheet (Cloud Sync)
-        await segerakKemajuanMuridDariCloud(currentUser.ic);
+        await segerakKemajuanDanMarkahMurid(currentUser.ic);
 
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Ujian';
+        btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Masuk Portal';
       } else {
         tunjukMesej("Nombor Kad Pengenalan tidak tepat. Sila semak semula.", "rose");
       }
@@ -1086,13 +1390,14 @@
     }
 
     function logout() {
-      if (confirm("Adakah anda pasti ingin log keluar? Kemajuan jawapan anda telah disimpan.")) {
+      if (confirm("Adakah anda pasti ingin log keluar?")) {
         currentUser = null;
         currentRole = null;
         document.getElementById("loginSection").classList.remove("hidden");
         document.getElementById("examSection").classList.add("hidden");
         document.getElementById("guruSection").classList.add("hidden");
         document.getElementById("userBadge").classList.add("hidden");
+        document.getElementById("panelKeputusanMurid").classList.add("hidden");
         document.getElementById("inputPassGuru").value = "";
         document.getElementById("inputIcMurid").value = "";
       }
@@ -1129,13 +1434,15 @@
       }
     }
 
-    // TARIK KEMAJUAN JAWAPAN DARI GOOGLE SHEET BILA LOG MASUK
-    async function segerakKemajuanMuridDariCloud(ic) {
+    // TARIK JAWAPAN DAN MARKAH SEMAKAN GURU UNTUK CALON
+    async function segerakKemajuanDanMarkahMurid(ic) {
       const st = document.getElementById("saveStatus");
-      st.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyegerak dari Cloud...';
+      st.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memeriksa status penandaan...';
       try {
         const res = await fetch(`${SCRIPT_URL}?action=get_student_answers&nokp=${ic}`);
         const data = await res.json();
+
+        // 1. Masukkan jawapan yang telah disimpan
         if (data.status === "found" && data.answers) {
           Object.keys(data.answers).forEach(k => {
             const el = document.getElementById(`ans_${k}`);
@@ -1144,26 +1451,53 @@
             }
           });
 
-          // Semak status setiap soalan yang telah dihantar
           for (let sNo = 1; sNo <= 10; sNo++) {
             const keys = SOALAN_MAP[sNo];
             const adaJawapan = keys.some(key => data.answers[key] && data.answers[key].trim() !== "");
             const badge = document.getElementById(`badge_status_${sNo}`);
             if (badge && adaJawapan) {
-              badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Pernah Dihantar ke Cloud';
+              badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Pernah Disimpan ke Cloud';
               badge.className = "text-xs text-emerald-700 font-bold";
             }
           }
-          st.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Kemajuan Berjaya Disambung';
+        }
+
+        // 2. Jika telah ditanda oleh guru, paparkan keputusan penuh
+        if (data.result) {
+          const r = data.result;
+          const panel = document.getElementById("panelKeputusanMurid");
+          panel.classList.remove("hidden");
+
+          document.getElementById("skorMuridA").textContent = `${r.markahA} / 50`;
+          document.getElementById("skorMuridB").textContent = `${r.markahB} / 30`;
+          document.getElementById("skorMuridC").textContent = `${r.markahC} / 20`;
+          document.getElementById("skorMuridJumlah").textContent = `${r.jumlahMarkah} / 100`;
+          document.getElementById("skorMuridGred").textContent = r.gred;
+          document.getElementById("teksUlasanGuruMurid").textContent = r.ulasan || "(Tiada ulasan tambahan daripada guru)";
+          if (r.tarikhTanda) {
+            document.getElementById("tarikhTandaMurid").textContent = "Tarikh Ditanda: " + new Date(r.tarikhTanda).toLocaleString("ms-MY");
+          }
+
+          // Tunjukkan lencana markah pada setiap ceraian soalan
+          if (r.markahPerItem) {
+            Object.keys(r.markahPerItem).forEach(k => {
+              const bNilai = document.getElementById(`badgeNilai_${k}`);
+              if (bNilai) {
+                bNilai.textContent = `Markah Guru: ${r.markahPerItem[k]} / ${SKEMA_DATA[k].max}m`;
+                bNilai.classList.remove("hidden");
+              }
+            });
+          }
+          st.innerHTML = '<i class="fa-solid fa-stamp text-emerald-600 mr-1"></i> Kertas Telah Ditanda Guru';
         } else {
+          document.getElementById("panelKeputusanMurid").classList.add("hidden");
           st.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Sedia Menjawab';
         }
       } catch (err) {
-        st.innerHTML = '<i class="fa-solid fa-hard-drive mr-1"></i> Mod Luar Talian (Storan Peranti)';
+        st.innerHTML = '<i class="fa-solid fa-hard-drive mr-1"></i> Mod Storan Peranti';
       }
     }
 
-    // HANTAR SATU SOALAN SECARA KHUSUS KE GOOGLE SHEET
     async function hantarSoalan(soalanNo) {
       if (!currentUser) return;
 
@@ -1197,7 +1531,6 @@
           body: JSON.stringify(payload)
         });
 
-        // Simpan salinan ke peranti
         simpanAutoLocal();
 
         badge.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Berjaya Disimpan ke Google Sheet';
@@ -1211,13 +1544,12 @@
         }, 1500);
 
       } catch (err) {
-        alert(`Gagal berhubung ke Google Sheet. Jawapan Soalan ${soalanNo} disimpan di peranti anda.`);
+        alert(`Gagal menyegerak ke awan. Jawapan Soalan ${soalanNo} disimpan di storan peranti anda.`);
         btn.disabled = false;
         btn.innerHTML = originalText;
       }
     }
 
-    // HANTAR SEMUA SOALAN SEKALIGUS
     async function submitSemuaJawapan() {
       if (!confirm("Adakah anda pasti ingin menghantar kesemua soalan ke Google Sheet sekarang?")) return;
 
@@ -1250,7 +1582,6 @@
         btn.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i> Semua Jawapan Telah Dihantar';
         btn.classList.replace("bg-emerald-600", "bg-slate-700");
 
-        // Kemas kini semua badge status soalan
         for (let sNo = 1; sNo <= 10; sNo++) {
           const badge = document.getElementById(`badge_status_${sNo}`);
           if (badge) {
@@ -1265,7 +1596,40 @@
       }
     }
 
-    // MOD GURU
+    // ENJIN AI CADANGAN PEMARKAHAN BERASASKAN KATA KUNCI
+    function analisisJawapanAI(kunciSoalan, jawapanTeks) {
+      if (!jawapanTeks || !jawapanTeks.trim()) {
+        return { cadanganMarkah: 0, kataKunciDitemui: [] };
+      }
+
+      const itemSkema = SKEMA_DATA[kunciSoalan];
+      if (!itemSkema || !itemSkema.kriteria) {
+        return { cadanganMarkah: 0, kataKunciDitemui: [] };
+      }
+
+      const teks = jawapanTeks.toLowerCase();
+      let kiraanMarkah = 0;
+      let dikesan = [];
+
+      itemSkema.kriteria.forEach(krit => {
+        const padan = krit.words.some(w => teks.includes(w.toLowerCase()));
+        if (padan) {
+          kiraanMarkah += (krit.point || 1);
+          dikesan.push(krit.label);
+        }
+      });
+
+      if (kiraanMarkah > itemSkema.max) {
+        kiraanMarkah = itemSkema.max;
+      }
+
+      return {
+        cadanganMarkah: kiraanMarkah,
+        kataKunciDitemui: dikesan
+      };
+    }
+
+    // MOD GURU / ADMIN
     function binaBorangPenandaanGuru() {
       const container = document.getElementById("containerPenandaan");
       container.innerHTML = "";
@@ -1275,28 +1639,43 @@
         const card = document.createElement("div");
         card.className = "bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden";
         card.innerHTML = `
-          <div class="bg-slate-50 px-5 py-3 border-b flex justify-between items-center">
+          <div class="bg-slate-50 px-5 py-3 border-b flex flex-wrap justify-between items-center gap-2">
             <span class="font-bold text-slate-800 text-sm">${itm.tajuk}</span>
             <div class="flex items-center space-x-2">
               <span class="text-xs text-slate-500 font-bold">Markah Penuh: ${itm.max}m</span>
+              <button type="button" onclick="ikutCadanganAI('${k}')" class="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-indigo-950 rounded-lg text-xs font-bold transition flex items-center shadow-sm">
+                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Ikut AI
+              </button>
               <input type="number" id="markah_${k}" min="0" max="${itm.max}" value="0" oninput="kiraMarkahKeseluruhan()"
-                class="w-16 px-2 py-1 text-center font-bold text-indigo-700 bg-white border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm" />
+                class="w-16 px-2 py-1 text-center font-black text-indigo-700 bg-white border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 text-sm" />
             </div>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-200 p-4 gap-4 text-xs">
             <div>
-              <span class="block font-bold text-slate-600 mb-1 flex items-center">
-                <i class="fa-solid fa-user-pen text-indigo-600 mr-1.5"></i> Jawapan Calon:
-              </span>
-              <div id="viewMurid_${k}" class="p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[90px] whitespace-pre-wrap leading-relaxed italic">
-                (Calon belum dipilih / tiada jawapan)
+              <div class="flex justify-between items-center mb-1">
+                <span class="block font-bold text-slate-600 flex items-center">
+                  <i class="fa-solid fa-user-pen text-indigo-600 mr-1.5"></i> Jawapan Calon:
+                </span>
+                <span id="badgeAI_${k}" class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                  ⚡ Cadangan AI: 0/${itm.max}m
+                </span>
+              </div>
+              <div id="viewMurid_${k}" class="p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[85px] whitespace-pre-wrap leading-relaxed italic">
+                (Calon belum dipilih)
+              </div>
+              <!-- Senarai kata kunci dikesan oleh AI -->
+              <div class="mt-2" id="kotakKeywords_${k}">
+                <span class="text-[10px] text-slate-400 font-bold block mb-1">Kata Kunci Dikesan oleh AI:</span>
+                <div id="listKeywords_${k}" class="flex flex-wrap gap-1">
+                  <span class="text-[10px] text-slate-400 italic">Tiada kata kunci dikesan.</span>
+                </div>
               </div>
             </div>
             <div>
               <span class="block font-bold text-amber-700 mb-1 flex items-center">
                 <i class="fa-solid fa-book-bookmark text-amber-600 mr-1.5"></i> Cadangan Pemarkahan (Skema SPM):
               </span>
-              <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-200 text-slate-700 min-h-[90px] whitespace-pre-wrap leading-relaxed font-mono text-[11px]">
+              <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-200 text-slate-700 min-h-[85px] whitespace-pre-wrap leading-relaxed font-mono text-[11px]">
 ${itm.skema}
               </div>
             </div>
@@ -1304,6 +1683,27 @@ ${itm.skema}
         `;
         container.appendChild(card);
       });
+    }
+
+    // IKUT CADANGAN AI BAGI SATU SOALAN
+    function ikutCadanganAI(kunci) {
+      const elAI = document.getElementById(`badgeAI_${kunci}`);
+      if (elAI && elAI.dataset.score !== undefined) {
+        document.getElementById(`markah_${kunci}`).value = elAI.dataset.score;
+        kiraMarkahKeseluruhan();
+      }
+    }
+
+    // TERAPKAN SEMUA CADANGAN AI SEKALI KLIK
+    function terapkanSemuaCadanganAI() {
+      const nama = document.getElementById("selectMuridMenanda").value;
+      if (!nama) { alert("Sila pilih calon terlebih dahulu."); return; }
+
+      Object.keys(SKEMA_DATA).forEach(k => {
+        ikutCadanganAI(k);
+      });
+      kiraMarkahKeseluruhan();
+      alert("Semua cadangan markah AI telah berjaya diterapkan! Guru masih boleh mengubah markah secara manual jika perlu.");
     }
 
     function muatJawapanMuridDipilih() {
@@ -1323,14 +1723,41 @@ ${itm.skema}
 
       Object.keys(SKEMA_DATA).forEach(k => {
         const el = document.getElementById(`viewMurid_${k}`);
+        const textAnswer = (j && j[k]) ? j[k] : "";
+        
         if (el) {
-          el.textContent = (j && j[k]) ? j[k] : "(Calon tidak menjawab)";
-          el.className = (j && j[k]) 
-            ? "p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[90px] whitespace-pre-wrap leading-relaxed"
-            : "p-3 bg-slate-50 rounded-xl border text-slate-400 min-h-[90px] whitespace-pre-wrap leading-relaxed italic";
+          el.textContent = textAnswer ? textAnswer : "(Calon tidak menjawab)";
+          el.className = textAnswer
+            ? "p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[85px] whitespace-pre-wrap leading-relaxed"
+            : "p-3 bg-slate-50 rounded-xl border text-slate-400 min-h-[85px] whitespace-pre-wrap leading-relaxed italic";
+        }
+
+        // Laksanakan analisis pintar AI berdasarkan kata kunci
+        const aiResult = analisisJawapanAI(k, textAnswer);
+        const bAI = document.getElementById(`badgeAI_${k}`);
+        const lKey = document.getElementById(`listKeywords_${k}`);
+        
+        if (bAI) {
+          bAI.textContent = `⚡ Cadangan AI: ${aiResult.cadanganMarkah} / ${SKEMA_DATA[k].max}m`;
+          bAI.dataset.score = aiResult.cadanganMarkah;
+        }
+
+        if (lKey) {
+          lKey.innerHTML = "";
+          if (aiResult.kataKunciDitemui.length > 0) {
+            aiResult.kataKunciDitemui.forEach(kw => {
+              const span = document.createElement("span");
+              span.className = "px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]";
+              span.textContent = `✓ ${kw}`;
+              lKey.appendChild(span);
+            });
+          } else {
+            lKey.innerHTML = '<span class="text-[10px] text-slate-400 italic">Tiada kata kunci dikesan.</span>';
+          }
         }
       });
 
+      // Muat semula skor jika telah ditanda sebelum ini
       const savedScore = localStorage.getItem(`markah_${m.ic}`);
       if (savedScore) {
         const obj = JSON.parse(savedScore);
@@ -1342,6 +1769,7 @@ ${itm.skema}
         }
         if (obj.ulasan) document.getElementById("ulasanGuru").value = obj.ulasan;
       } else {
+        // Jika belum dinilai, biarkan input sedia ada atau kosongkan
         Object.keys(SKEMA_DATA).forEach(key => {
           const inp = document.getElementById(`markah_${key}`);
           if (inp) inp.value = 0;
@@ -1423,7 +1851,7 @@ ${itm.skema}
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-        alert(`Markah bagi calon ${m.nama} telah berjaya direkodkan ke Google Sheet!`);
+        alert(`Markah & ulasan bagi calon ${m.nama} telah berjaya direkodkan ke Google Sheet! Murid kini boleh melihat keputusan mereka.`);
       } catch (e) {
         alert("Markah disimpan secara setempat di peranti guru.");
       }
@@ -1451,7 +1879,7 @@ ${itm.skema}
               };
             }
           });
-          alert(`Penyegerakan berjaya! ${data.length} rekod calon dimuat turun dari Google Sheet.`);
+          alert(`Penyegerakan selesai! ${data.length} rekod calon dimuat turun.`);
           muatJawapanMuridDipilih();
         }
       } catch (e) {
