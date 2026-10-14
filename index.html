@@ -74,7 +74,7 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Nombor Kad Pengenalan (tanpa sempang)</label>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Nombor Kad Pengenalan (tanpa tanda '-')</label>
           <input type="password" id="inputIcMurid" placeholder="Cth: 091130010503" class="w-full px-3 py-2.5 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
           <p class="text-[11px] text-slate-400 mt-1.5"><i class="fa-solid fa-circle-info mr-1"></i>No. KP anda digunakan untuk menyambung soalan dan melihat keputusan.</p>
         </div>
@@ -212,7 +212,6 @@
                 <rect x="182" y="115" width="28" height="34" fill="#f8fafc" stroke="#1e293b" stroke-width="2" />
                 <line x1="187" y1="125" x2="205" y2="125" stroke="#1e293b" stroke-width="1.5" />
                 <line x1="187" y1="135" x2="205" y2="135" stroke="#1e293b" stroke-width="1.5" />
-                <!-- BANNER KOPERASI DIBESARKAN -->
                 <path d="M25 210 L295 210 L280 252 L40 252 Z" fill="#0f172a" stroke="#1e293b" stroke-width="2" />
                 <text x="160" y="234" text-anchor="middle" font-size="22" font-weight="900" fill="#ffffff" letter-spacing="4" font-family="sans-serif">KOPERASI</text>
                 <rect x="75" y="246" width="170" height="20" rx="4" fill="#eab308" />
@@ -250,7 +249,6 @@
               <textarea id="ans_s1c" rows="3" class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500" placeholder="Jawapan anda..."></textarea>
             </div>
 
-            <!-- BUTANG SIMPAN SOALAN 1 -->
             <div class="flex flex-wrap justify-between items-center pt-3 border-t bg-slate-50 p-3 rounded-xl gap-2 no-print">
               <span id="badge_status_1" class="text-xs text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1"></i> Belum dihantar</span>
               <button type="button" onclick="hantarSoalan(1)" id="btn_soalan_1" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow transition flex items-center">
@@ -821,26 +819,80 @@
       </form>
     </section>
 
-    <!-- 3. MOD GURU & PENANDAAN DENGAN CADANGAN AI BERASASKAN KATA KUNCI -->
+    <!-- 3. MOD GURU: MATRIKS STATUS JAWAPAN MENGIKUT SOALAN & PENANDAAN AI -->
     <section id="guruSection" class="hidden space-y-6">
       
-      <!-- Panel Kawalan Guru -->
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+      <!-- MATRIKS PEMANTAUAN JAWAPAN MENGIKUT NOMBOR SOALAN -->
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
+        <div class="flex flex-wrap justify-between items-center gap-3">
+          <div>
+            <h2 class="text-lg font-black text-slate-900 flex items-center">
+              <i class="fa-solid fa-table-cells text-indigo-600 mr-2"></i> Matriks Status Jawapan Calon Mengikut Nombor Soalan (S1 - S10)
+            </h2>
+            <p class="text-xs text-slate-500">Pantau kemajuan setiap calon dalam menjawab soalan 1 hingga 10 secara masa nyata.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="tarikDariGoogleSheet()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Semula
+            </button>
+          </div>
+        </div>
+
+        <!-- STATISTIK RINGKAS SOALAN -->
+        <div class="grid grid-cols-5 sm:grid-cols-10 gap-1.5 text-center bg-slate-50 p-3 rounded-xl border border-slate-200 text-[11px]" id="barStatistikSoalan">
+          <!-- Akan diisi secara dinamik -->
+        </div>
+
+        <!-- JADUAL MATRIKS MURID VS SOALAN -->
+        <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
+          <table class="min-w-full divide-y divide-slate-200 text-xs">
+            <thead class="bg-slate-800 text-white">
+              <tr>
+                <th class="py-2.5 px-3 text-left font-bold w-8">Bil</th>
+                <th class="py-2.5 px-3 text-left font-bold">Nama Murid</th>
+                <th class="py-2.5 px-2 text-center font-bold">S1</th>
+                <th class="py-2.5 px-2 text-center font-bold">S2</th>
+                <th class="py-2.5 px-2 text-center font-bold">S3</th>
+                <th class="py-2.5 px-2 text-center font-bold">S4</th>
+                <th class="py-2.5 px-2 text-center font-bold">S5</th>
+                <th class="py-2.5 px-2 text-center font-bold">S6</th>
+                <th class="py-2.5 px-2 text-center font-bold">S7</th>
+                <th class="py-2.5 px-2 text-center font-bold">S8</th>
+                <th class="py-2.5 px-2 text-center font-bold">S9</th>
+                <th class="py-2.5 px-2 text-center font-bold">S10</th>
+                <th class="py-2.5 px-3 text-center font-bold">Kemajuan</th>
+                <th class="py-2.5 px-3 text-center font-bold">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyMatriksCalon" class="divide-y divide-slate-200 bg-white">
+              <!-- Baris calon dibina dinamik oleh JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Petunjuk Warna -->
+        <div class="flex flex-wrap items-center gap-4 text-[11px] text-slate-500 pt-2">
+          <span class="font-bold">Petunjuk Status:</span>
+          <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block mr-1"></span> Lengkap Dijawab</span>
+          <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block mr-1"></span> Sebahagian Ceraian</span>
+          <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-slate-300 inline-block mr-1"></span> Belum Menjawab</span>
+        </div>
+      </div>
+
+      <!-- PANEL PENANDAAN & CADANGAN AI -->
+      <div id="panelMenandaGuru" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-4">
         <div class="flex flex-wrap justify-between items-center gap-4">
           <div>
             <h2 class="text-xl font-black text-slate-900 flex items-center">
-              <i class="fa-solid fa-robot text-amber-500 mr-2"></i> Mod Penandaan Pintar AI & Skema
+              <i class="fa-solid fa-robot text-amber-500 mr-2"></i> Ruang Semakan & Penandaan AI
             </h2>
             <p class="text-xs text-slate-500">
-              Sistem AI menganalisis kata kunci jawapan murid dan mengira cadangan markah secara automatik.
+              Sistem AI menganalisis kata kunci skema SPM Pahang 2026 secara automatik. Guru boleh menerima atau mengubah markah.
             </p>
           </div>
           <div class="flex items-center space-x-2">
             <button onclick="terapkanSemuaCadanganAI()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-black rounded-xl shadow transition flex items-center">
               <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> ⚡ Terapkan Semua Cadangan AI
-            </button>
-            <button onclick="tarikDariGoogleSheet()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition">
-              <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Segerak Google Sheet
             </button>
             <button onclick="cetakSlipMarkah()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow transition">
               <i class="fa-solid fa-print mr-1.5"></i> Cetak Slip
@@ -848,37 +900,37 @@
           </div>
         </div>
 
-        <div class="mt-4 pt-4 border-t flex flex-wrap items-center gap-4">
+        <div class="pt-2 border-t flex flex-wrap items-center gap-4">
           <div class="w-full sm:w-auto">
-            <label class="block text-xs font-bold text-slate-700 mb-1">Pilih Calon untuk Ditanda:</label>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Calon yang Sedang Ditanda:</label>
             <select id="selectMuridMenanda" onchange="muatJawapanMuridDipilih()" class="px-3.5 py-2.5 text-sm border rounded-xl bg-slate-50 font-bold text-slate-800 min-w-[320px]">
               <option value="">-- Sila Pilih Calon --</option>
             </select>
           </div>
         </div>
-      </div>
 
-      <!-- KAD SKOR RINGKASAN LIVE -->
-      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <div class="bg-white p-4 rounded-xl border text-center shadow-sm">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian A</span>
-          <p id="liveMarkahA" class="text-lg font-black text-indigo-700">0 / 50</p>
-        </div>
-        <div class="bg-white p-4 rounded-xl border text-center shadow-sm">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian B</span>
-          <p id="liveMarkahB" class="text-lg font-black text-indigo-700">0 / 30</p>
-        </div>
-        <div class="bg-white p-4 rounded-xl border text-center shadow-sm">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian C</span>
-          <p id="liveMarkahC" class="text-lg font-black text-indigo-700">0 / 20</p>
-        </div>
-        <div class="bg-white p-4 rounded-xl border text-center shadow-sm">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Jumlah Markah</span>
-          <p id="liveJumlahMarkah" class="text-xl font-black text-emerald-600">0 / 100</p>
-        </div>
-        <div class="bg-white p-4 rounded-xl border text-center shadow-sm">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Gred SPM</span>
-          <p id="liveGred" class="text-xl font-black text-amber-500">-</p>
+        <!-- KAD SKOR RINGKASAN LIVE -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 pt-2">
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian A</span>
+            <p id="liveMarkahA" class="text-lg font-black text-indigo-700">0 / 50</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian B</span>
+            <p id="liveMarkahB" class="text-lg font-black text-indigo-700">0 / 30</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Bahagian C</span>
+            <p id="liveMarkahC" class="text-lg font-black text-indigo-700">0 / 20</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Jumlah Markah</span>
+            <p id="liveJumlahMarkah" class="text-xl font-black text-emerald-600">0 / 100</p>
+          </div>
+          <div class="bg-slate-50 p-3 rounded-xl border text-center shadow-sm">
+            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Gred SPM</span>
+            <p id="liveGred" class="text-xl font-black text-amber-500">-</p>
+          </div>
         </div>
       </div>
 
@@ -888,7 +940,7 @@
       <!-- ULASAN GURU & SIMPAN KE GOOGLE SHEET -->
       <div class="bg-white p-6 rounded-2xl shadow border border-slate-200 space-y-4">
         <div>
-          <label class="block text-sm font-bold text-slate-800 mb-1">Ulasan / Maklum Balas Guru kepada Murid:</label>
+          <label class="block text-sm font-bold text-slate-800 mb-1">Ulasan / Maklum Balas Guru kepada Calon:</label>
           <textarea id="ulasanGuru" rows="3" class="w-full p-3 text-sm border rounded-xl focus:ring-2 focus:ring-amber-500" placeholder="Tuliskan ulasan pencapaian calon... Murid akan melihat ulasan ini di portal mereka."></textarea>
         </div>
         <div class="flex justify-end">
@@ -938,7 +990,6 @@
       10: ["s10a", "s10b", "s10c", "s10d", "s10e"]
     };
 
-    // SKEMA PEMARKAHAN BESERTA KRITERIA KATA KUNCI UNTUK ANALISIS AI
     const SKEMA_DATA = {
       "s1a": {
         tajuk: "Soalan 1(a) - Ciri Koperasi (Logo 1)",
@@ -1292,6 +1343,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       isiDropdownMurid();
       binaBorangPenandaanGuru();
+      binaMatriksStatusAdmin();
 
       document.querySelectorAll("#soalanForm textarea, #soalanForm input").forEach(el => {
         el.addEventListener("input", simpanAutoLocal);
@@ -1434,7 +1486,6 @@
       }
     }
 
-    // TARIK JAWAPAN DAN MARKAH SEMAKAN GURU UNTUK CALON
     async function segerakKemajuanDanMarkahMurid(ic) {
       const st = document.getElementById("saveStatus");
       st.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Memeriksa status penandaan...';
@@ -1442,7 +1493,6 @@
         const res = await fetch(`${SCRIPT_URL}?action=get_student_answers&nokp=${ic}`);
         const data = await res.json();
 
-        // 1. Masukkan jawapan yang telah disimpan
         if (data.status === "found" && data.answers) {
           Object.keys(data.answers).forEach(k => {
             const el = document.getElementById(`ans_${k}`);
@@ -1462,7 +1512,6 @@
           }
         }
 
-        // 2. Jika telah ditanda oleh guru, paparkan keputusan penuh
         if (data.result) {
           const r = data.result;
           const panel = document.getElementById("panelKeputusanMurid");
@@ -1478,7 +1527,6 @@
             document.getElementById("tarikhTandaMurid").textContent = "Tarikh Ditanda: " + new Date(r.tarikhTanda).toLocaleString("ms-MY");
           }
 
-          // Tunjukkan lencana markah pada setiap ceraian soalan
           if (r.markahPerItem) {
             Object.keys(r.markahPerItem).forEach(k => {
               const bNilai = document.getElementById(`badgeNilai_${k}`);
@@ -1596,6 +1644,117 @@
       }
     }
 
+    // ==========================================
+    // FUNGSI MATRIKS STATUS JAWAPAN MENGIKUT SOALAN (ADMIN)
+    // ==========================================
+    function binaMatriksStatusAdmin() {
+      const tbody = document.getElementById("tbodyMatriksCalon");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      let jumlahCalonJawabPerSoalan = Array(11).fill(0);
+
+      SENARAI_MURID.forEach((murid, idx) => {
+        const ic = murid.ic;
+        let sub = storedSubmissions[ic];
+
+        if (!sub) {
+          const local = localStorage.getItem(`jawapan_${ic}`) || localStorage.getItem(`hantar_${ic}`);
+          if (local) {
+            try {
+              const p = JSON.parse(local);
+              sub = p.answers || p;
+            } catch(e){}
+          }
+        }
+
+        let soalanSelesaiCount = 0;
+        let cellsHtml = "";
+
+        for (let sNo = 1; sNo <= 10; sNo++) {
+          const keys = SOALAN_MAP[sNo];
+          const totalKeys = keys.length;
+          let answeredKeys = 0;
+
+          keys.forEach(k => {
+            if (sub && sub[k] && String(sub[k]).trim() !== "") {
+              answeredKeys++;
+            }
+          });
+
+          if (answeredKeys === totalKeys) {
+            soalanSelesaiCount++;
+            jumlahCalonJawabPerSoalan[sNo]++;
+            cellsHtml += `
+              <td class="py-2.5 px-2 text-center">
+                <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 font-black text-xs shadow-xs" title="Lengkap (${answeredKeys}/${totalKeys})">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+              </td>`;
+          } else if (answeredKeys > 0) {
+            jumlahCalonJawabPerSoalan[sNo]++;
+            cellsHtml += `
+              <td class="py-2.5 px-2 text-center">
+                <span class="inline-flex items-center justify-center px-1.5 h-6 rounded-lg bg-amber-100 text-amber-800 font-bold text-[10px]" title="Sebahagian (${answeredKeys}/${totalKeys})">
+                  ${answeredKeys}/${totalKeys}
+                </span>
+              </td>`;
+          } else {
+            cellsHtml += `
+              <td class="py-2.5 px-2 text-center text-slate-300 font-bold text-sm">
+                —
+              </td>`;
+          }
+        }
+
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-mono font-bold text-slate-500">${idx + 1}</td>
+          <td class="py-2.5 px-3 font-semibold text-slate-800 flex flex-col">
+            <span>${murid.nama}</span>
+            <span class="text-[10px] text-slate-400 font-mono">${murid.ic}</span>
+          </td>
+          ${cellsHtml}
+          <td class="py-2.5 px-3 text-center">
+            <span class="px-2.5 py-1 rounded-full text-xs font-black ${soalanSelesaiCount === 10 ? 'bg-emerald-100 text-emerald-800' : (soalanSelesaiCount > 0 ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-100 text-slate-500')}">
+              ${soalanSelesaiCount} / 10
+            </span>
+          </td>
+          <td class="py-2.5 px-3 text-center">
+            <button onclick="pilihCalonDanScroll('${murid.nama}')" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center mx-auto">
+              <i class="fa-solid fa-pen-to-square mr-1"></i> Tanda
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Kemaskini Bar Ringkasan Statistik Soalan S1 hingga S10
+      const statContainer = document.getElementById("barStatistikSoalan");
+      if (statContainer) {
+        statContainer.innerHTML = "";
+        for (let sNo = 1; sNo <= 10; sNo++) {
+          const count = jumlahCalonJawabPerSoalan[sNo];
+          const div = document.createElement("div");
+          div.className = "bg-white p-2 rounded-lg border border-slate-200 shadow-2xs";
+          div.innerHTML = `
+            <span class="font-bold text-slate-600 block text-[10px]">S${sNo}</span>
+            <span class="text-xs font-black ${count > 0 ? 'text-indigo-600' : 'text-slate-400'}">${count}/${SENARAI_MURID.length}</span>
+          `;
+          statContainer.appendChild(div);
+        }
+      }
+    }
+
+    // PINTASAN KLIK DARI JADUAL MATRIKS KE PANEL MENANDA
+    function pilihCalonDanScroll(namaCalon) {
+      const select = document.getElementById("selectMuridMenanda");
+      select.value = namaCalon;
+      muatJawapanMuridDipilih();
+      document.getElementById("panelMenandaGuru").scrollIntoView({ behavior: "smooth" });
+    }
+
     // ENJIN AI CADANGAN PEMARKAHAN BERASASKAN KATA KUNCI
     function analisisJawapanAI(kunciSoalan, jawapanTeks) {
       if (!jawapanTeks || !jawapanTeks.trim()) {
@@ -1629,7 +1788,6 @@
       };
     }
 
-    // MOD GURU / ADMIN
     function binaBorangPenandaanGuru() {
       const container = document.getElementById("containerPenandaan");
       container.innerHTML = "";
@@ -1663,7 +1821,6 @@
               <div id="viewMurid_${k}" class="p-3 bg-slate-50 rounded-xl border text-slate-800 min-h-[85px] whitespace-pre-wrap leading-relaxed italic">
                 (Calon belum dipilih)
               </div>
-              <!-- Senarai kata kunci dikesan oleh AI -->
               <div class="mt-2" id="kotakKeywords_${k}">
                 <span class="text-[10px] text-slate-400 font-bold block mb-1">Kata Kunci Dikesan oleh AI:</span>
                 <div id="listKeywords_${k}" class="flex flex-wrap gap-1">
@@ -1685,7 +1842,6 @@ ${itm.skema}
       });
     }
 
-    // IKUT CADANGAN AI BAGI SATU SOALAN
     function ikutCadanganAI(kunci) {
       const elAI = document.getElementById(`badgeAI_${kunci}`);
       if (elAI && elAI.dataset.score !== undefined) {
@@ -1694,7 +1850,6 @@ ${itm.skema}
       }
     }
 
-    // TERAPKAN SEMUA CADANGAN AI SEKALI KLIK
     function terapkanSemuaCadanganAI() {
       const nama = document.getElementById("selectMuridMenanda").value;
       if (!nama) { alert("Sila pilih calon terlebih dahulu."); return; }
@@ -1703,7 +1858,7 @@ ${itm.skema}
         ikutCadanganAI(k);
       });
       kiraMarkahKeseluruhan();
-      alert("Semua cadangan markah AI telah berjaya diterapkan! Guru masih boleh mengubah markah secara manual jika perlu.");
+      alert("Semua cadangan markah AI telah berjaya diterapkan! Guru boleh menyunting markah secara manual jika perlu.");
     }
 
     function muatJawapanMuridDipilih() {
@@ -1732,7 +1887,6 @@ ${itm.skema}
             : "p-3 bg-slate-50 rounded-xl border text-slate-400 min-h-[85px] whitespace-pre-wrap leading-relaxed italic";
         }
 
-        // Laksanakan analisis pintar AI berdasarkan kata kunci
         const aiResult = analisisJawapanAI(k, textAnswer);
         const bAI = document.getElementById(`badgeAI_${k}`);
         const lKey = document.getElementById(`listKeywords_${k}`);
@@ -1757,7 +1911,6 @@ ${itm.skema}
         }
       });
 
-      // Muat semula skor jika telah ditanda sebelum ini
       const savedScore = localStorage.getItem(`markah_${m.ic}`);
       if (savedScore) {
         const obj = JSON.parse(savedScore);
@@ -1769,7 +1922,6 @@ ${itm.skema}
         }
         if (obj.ulasan) document.getElementById("ulasanGuru").value = obj.ulasan;
       } else {
-        // Jika belum dinilai, biarkan input sedia ada atau kosongkan
         Object.keys(SKEMA_DATA).forEach(key => {
           const inp = document.getElementById(`markah_${key}`);
           if (inp) inp.value = 0;
@@ -1879,11 +2031,13 @@ ${itm.skema}
               };
             }
           });
-          alert(`Penyegerakan selesai! ${data.length} rekod calon dimuat turun.`);
+
+          // Kemas kini paparan matriks murid vs soalan
+          binaMatriksStatusAdmin();
           muatJawapanMuridDipilih();
         }
       } catch (e) {
-        alert("Gagal menarik data dari Google Sheet: " + e.message);
+        console.warn("Ralat menyegerak: " + e.message);
       }
     }
 
