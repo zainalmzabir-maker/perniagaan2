@@ -39,37 +39,49 @@
       .page-break-inside-avoid {
         page-break-inside: avoid !important;
       }
+      /* Margin sempit untuk menjamin 1 muka surat A4 */
       @page {
-        size: A4;
-        margin: 12mm 15mm 15mm 15mm;
+        size: A4 portrait;
+        margin: 6mm 8mm 6mm 8mm;
       }
     }
 
-    /* GAYA PEN MERAH GURU */
+    /* GAYA DAKWAT PEN MERAH GURU */
     .pen-merah-teks {
-      color: #dc2626 !important; /* Red 600 */
+      color: #dc2626 !important;
     }
     .pen-merah-border {
       border-color: #dc2626 !important;
     }
     .pen-merah-bg {
-      background-color: #fef2f2 !important; /* Red 50 */
+      background-color: #fef2f2 !important;
     }
     .badge-markah-merah {
-      border: 2px solid #dc2626 !important;
+      border: 1.5px solid #dc2626 !important;
       color: #dc2626 !important;
       background-color: #fff1f2 !important;
       font-weight: 900 !important;
       border-radius: 9999px !important;
-      padding: 2px 10px !important;
+      padding: 1px 6px !important;
       display: inline-block !important;
       font-family: monospace !important;
+      font-size: 10px !important;
+    }
+    .tanda-betul-merah {
+      color: #dc2626 !important;
+      font-weight: 900 !important;
+      font-size: 13px !important;
+    }
+    .tanda-salah-merah {
+      color: #dc2626 !important;
+      font-weight: 900 !important;
+      font-size: 13px !important;
     }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- HEADER SISTEM (DISOROKKAN SEMASA CETAK) -->
+  <!-- HEADER SISTEM -->
   <header class="bg-indigo-950 text-white shadow-lg sticky top-0 z-50 no-print">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-2">
       <div class="flex items-center space-x-3">
@@ -161,9 +173,14 @@
             <h3 class="text-xl font-black mt-2">Keputusan Rasmi Penandaan Guru</h3>
             <p class="text-xs text-emerald-200" id="tarikhTandaMurid"></p>
           </div>
-          <button onclick="cetakSkripCalon(currentUser.nama)" class="px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-xl shadow-lg flex items-center transition">
-            <i class="fa-solid fa-print mr-2"></i> Cetak Skrip & Penandaan Guru
-          </button>
+          <div class="flex items-center space-x-2">
+            <button onclick="cetakKompakCalon(currentUser.nama)" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-emerald-950 font-black text-xs rounded-xl shadow-lg flex items-center transition">
+              <i class="fa-solid fa-file-contract mr-1.5"></i> Cetak Kompak 1 Muka Surat
+            </button>
+            <button onclick="cetakSkripCalon(currentUser.nama)" class="px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs rounded-xl shadow-lg flex items-center transition">
+              <i class="fa-solid fa-print mr-1.5"></i> Cetak Penuh
+            </button>
+          </div>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 my-5 text-center">
@@ -235,7 +252,7 @@
             <p class="text-xs text-indigo-200">Jawab semua soalan berikut.</p>
           </div>
 
-          <!-- SOALAN 1 -->
+          <!-- S1 -->
           <div id="soalan_card_1" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 1</span>
@@ -357,7 +374,7 @@
             </div>
           </div>
 
-          <!-- S3 -->
+          <!-- S3 HINGGA S6 DENGAN STRUKTUR PADAT -->
           <div id="soalan_card_3" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 3</span>
@@ -563,14 +580,14 @@
             </div>
           </div>
 
-          <!-- S8 -->
+          <!-- S8 & S9 -->
           <div id="soalan_card_8" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 8</span>
               <span class="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-bold">[15 Markah]</span>
             </div>
             <div class="bg-gradient-to-br from-teal-50 to-emerald-50 border border-teal-200 p-4 rounded-xl text-xs text-slate-700">
-              <strong>Ann Enterprise:</strong> Agensi pelancongan mempromosikan keunikan Sarawak untuk Tahun Melawat Malaysia 2026. Kolaborasi rangkaian hotel/resort, promosi digital, menggaji anak tempatan & tawar pakej komprehensif.
+              <strong>Ann Enterprise:</strong> Agensi pelancongan mempromosikan keunikan Sarawak untuk Tahun Melawat Malaysia 2026. Kolaborasi hotel/resort, promosi digital, menggaji anak tempatan & pakej komprehensif.
             </div>
             <div>
               <div class="flex justify-between items-center mb-1">
@@ -601,7 +618,6 @@
             </div>
           </div>
 
-          <!-- S9 -->
           <div id="soalan_card_9" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 9</span>
@@ -647,7 +663,6 @@
             <p class="text-xs text-indigo-200">Kajian kes ini wajib dijawab.</p>
           </div>
 
-          <!-- S10 -->
           <div id="soalan_card_10" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
               <span class="font-black text-slate-800 text-base">SOALAN 10 (KAJIAN KES)</span>
@@ -777,12 +792,15 @@
               Analisis kata kunci skema SPM Pahang 2026 secara automatik. Guru boleh menerima atau menyunting markah secara manual.
             </p>
           </div>
-          <div class="flex items-center space-x-2">
-            <button onclick="terapkanSemuaCadanganAI()" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-black rounded-xl shadow transition flex items-center">
-              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> ⚡ Terapkan Semua Cadangan AI
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="terapkanSemuaCadanganAI()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-indigo-950 text-xs font-black rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> ⚡ Terapkan AI
             </button>
-            <button onclick="cetakSkripCalon(document.getElementById('selectMuridMenanda').value)" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow transition flex items-center">
-              <i class="fa-solid fa-print mr-1.5"></i> Cetak Skrip Calon (Penandaan Merah)
+            <button onclick="cetakKompakCalon(document.getElementById('selectMuridMenanda').value)" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow transition flex items-center" title="Cetak Lembaran Kompak 1 A4 untuk bincang">
+              <i class="fa-solid fa-file-contract mr-1.5"></i> 📄 Cetak Kompak 1 Helaian (Bincang)
+            </button>
+            <button onclick="cetakSkripCalon(document.getElementById('selectMuridMenanda').value)" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl shadow transition flex items-center">
+              <i class="fa-solid fa-print mr-1.5"></i> Cetak Skrip Penuh
             </button>
           </div>
         </div>
@@ -843,11 +861,9 @@
   </footer>
 
   <!-- ============================================================== -->
-  <!-- 4. DOKUMEN CETAKAN RASMI (A4 PRINT SCRIPT & RED MARKING) -->
+  <!-- 4. KAWASAN CETAKAN (A4 PRINT SCRIPT & RED MARKING) -->
   <!-- ============================================================== -->
-  <div id="printableExamScript" class="hidden">
-    <!-- Kandungan cetakan akan dijana secara dinamik oleh fungsi cetakSkripCalon() -->
-  </div>
+  <div id="printableExamScript" class="hidden"></div>
 
   <!-- JAVASCRIPT SISTEM -->
   <script>
@@ -894,7 +910,8 @@
 
     const SKEMA_DATA = {
       "s1a": {
-        tajuk: "Soalan 1(a) - Ciri Koperasi (Logo 1)",
+        tajuk: "Soalan 1(a)",
+        labelKompak: "1(a) Ciri Koperasi",
         teksSoalan: "Logo 1 menunjukkan sebuah bentuk pemilikan perniagaan. Jelaskan ciri-ciri bentuk pemilikan perniagaan tersebut.",
         max: 3, bah: "A",
         kriteria: [
@@ -905,10 +922,11 @@
           { words: ["hak bersuara", "membuat keputusan"], label: "Hak bersuara / membuat keputusan" },
           { words: ["liabiliti terhad", "modal dilaburkan"], label: "Liabiliti terhad" }
         ],
-        skema: `[Maksimum 3 Markah]\n• Kegiatan ekonomi memenuhi keperluan anggota [1m]\n• Aktiviti tidak berunsurkan politik / jaga kebajikan [1m]\n• Tertakluk Akta Koperasi 1993 / undang-undang kecil [1m]\n• Modal daripada yuran/syer keahlian [1m]\n• Hak bersuara & membuat keputusan [1m]\n• Liabiliti terhad [1m]`
+        skema: `• Kegiatan ekonomi memenuhi keperluan anggota [1m]\n• Aktiviti tidak berunsurkan politik / jaga kebajikan [1m]\n• Tertakluk Akta Koperasi 1993 / undang-undang kecil [1m]\n• Modal daripada yuran/syer keahlian [1m]\n• Hak bersuara & membuat keputusan [1m]\n• Liabiliti terhad [1m]`
       },
       "s1b": {
-        tajuk: "Soalan 1(b) - Kelebihan Syarikat Sdn Bhd",
+        tajuk: "Soalan 1(b)",
+        labelKompak: "1(b) Kelebihan Sykt Sdn Bhd",
         teksSoalan: "Terangkan kelebihan syarikat sendirian berhad.",
         max: 4, bah: "A",
         kriteria: [
@@ -916,164 +934,174 @@
           { words: ["liabiliti terhad", "rugi setakat modal", "harta peribadi"], label: "Liabiliti terhad" },
           { words: ["dirahsiakan", "tidak diumumkan", "laporan kewangan"], label: "Hal ehwal kewangan dirahsiakan" }
         ],
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Modal lebih besar -> Kumpul modal melalui terbitan syer [2m]\n• Liabiliti terhad -> Rugi setakat modal dilabur; harta peribadi selamat [2m]\n• Hal ehwal dirahsiakan -> Laporan kewangan tidak diumumkan kepada umum [2m]`
+        skema: `• Modal lebih besar -> Terbitan syer [2m]\n• Liabiliti terhad -> Harta peribadi selamat [2m]\n• Hal ehwal dirahsiakan -> Kewangan sulit [2m]`
       },
       "s1c": {
-        tajuk: "Soalan 1(c) - Skala Antarabangsa",
+        tajuk: "Soalan 1(c)",
+        labelKompak: "1(c) Skala Antarabangsa",
         teksSoalan: "Huraikan skala perniagaan bagi pasaran antarabangsa.",
         max: 3, bah: "A",
         kriteria: [
-          { words: ["skala zon", "zon"], label: "Fakta Skala Zon" },
-          { words: ["kawasan tertentu", "pasaran tertentu", "asean"], label: "Huraian/Contoh Zon" },
-          { words: ["skala global", "global"], label: "Fakta Skala Global" },
+          { words: ["skala zon", "zon"], label: "Skala Zon" },
+          { words: ["kawasan tertentu", "pasaran tertentu", "asean"], label: "Huraian Zon" },
+          { words: ["skala global", "global"], label: "Skala Global" },
           { words: ["merentasi sempadan", "seluruh dunia", "internet"], label: "Huraian Global" }
         ],
-        skema: `[Maksimum 3 Markah: 1F + 1H + 1C]\n• Skala zon: Pasaran kawasan tertentu (cth ASEAN) [2m/3m]\n• Skala global: Merentasi sempadan dunia dipacu teknologi/internet [2m/3m]`
+        skema: `• Skala zon: Pasaran kawasan tertentu (cth ASEAN) [2m]\n• Skala global: Merentasi sempadan dunia dipacu teknologi [2m]`
       },
       "s2a": {
-        tajuk: "Soalan 2(a) - Peranan Kerajaan Atasi Inflasi",
+        tajuk: "Soalan 2(a)",
+        labelKompak: "2(a) Peranan Kerajaan Inflasi",
         teksSoalan: "Bagaimanakah peranan kerajaan dalam mengatasi masalah inflasi?",
         max: 3, bah: "A",
         kriteria: [
-          { words: ["kadar faedah", "dasar kewangan", "simpan wang"], label: "Dasar kewangan / faedah" },
+          { words: ["kadar faedah", "dasar kewangan", "simpan wang"], label: "Kadar faedah / dasar kewangan" },
           { words: ["kawal harga", "dasar harga", "mengawal kenaikan harga"], label: "Kawalan harga barang" },
           { words: ["dasar fiskal", "cukai pendapatan", "cukai"], label: "Dasar fiskal / cukai" },
-          { words: ["eksport", "barangan tempatan", "kurangkan import"], label: "Galak barangan tempatan / eksport" }
+          { words: ["eksport", "barangan tempatan", "kurangkan import"], label: "Guna barangan tempatan" }
         ],
-        skema: `[Maksimum 3 Markah]\n• Naikkan kadar faedah / dasar kewangan [1m]\n• Galakkan masyarakat simpan wang [1m]\n• Kawal kenaikan harga barangan [1m]\n• Laksana dasar fiskal (naik cukai) [1m]\n• Galak guna barangan tempatan / kurangkan import [1m]`
+        skema: `• Naikkan kadar faedah [1m]\n• Kawal harga barangan [1m]\n• Laksana dasar fiskal (naik cukai) [1m]`
       },
       "s2b": {
-        tajuk: "Soalan 2(b) - Faktor Sumber Manusia",
+        tajuk: "Soalan 2(b)",
+        labelKompak: "2(b) Faktor Sumber Manusia",
         teksSoalan: "Jelaskan faktor sumber manusia yang boleh membantu meningkatkan prestasi sesebuah perniagaan.",
         max: 3, bah: "A",
         kriteria: [
-          { words: ["berkepakaran", "berkemahiran", "berpengalaman", "terlatih"], label: "Berkepakaran / berkemahiran" },
+          { words: ["berkepakaran", "berkemahiran", "berpengalaman", "terlatih"], label: "Berkepakaran / kemahiran" },
           { words: ["bermotivasi", "rajin", "berdisiplin"], label: "Bermotivasi / rajin" },
-          { words: ["mencukupi", "bilangan"], label: "Tenaga kerja mencukupi" },
+          { words: ["mencukupi", "bilangan"], label: "Bilangan mencukupi" },
           { words: ["kreatif", "inovatif"], label: "Kreatif & inovatif" }
         ],
-        skema: `[Maksimum 3 Markah]\n• Pekerja berkepakaran / berkemahiran / terlatih [1m]\n• Pekerja bermotivasi / rajin [1m]\n• Bilangan pekerja yang mencukupi [1m]\n• Pekerja yang kreatif dan inovatif [1m]`
+        skema: `• Pekerja berkepakaran / terlatih [1m]\n• Pekerja bermotivasi [1m]\n• Bilangan mencukupi [1m]`
       },
       "s2c_i": {
-        tajuk: "Soalan 2(c)(i) - Objektif Boleh Dicapai",
+        tajuk: "Soalan 2(c)(i)",
+        labelKompak: "2(c)(i) Boleh Dicapai",
         teksSoalan: "Jelaskan ciri objektif: Boleh dicapai.",
         max: 2, bah: "A",
         kriteria: [
-          { words: ["realistik", "tidak mustahil", "boleh dicapai"], label: "Sasaran realistik / tidak mustahil" },
-          { words: ["sumber yang ada", "tenaga", "contoh", "10%"], label: "Berasaskan sumber / contoh sesuai" }
+          { words: ["realistik", "tidak mustahil", "boleh dicapai"], label: "Sasaran realistik" },
+          { words: ["sumber yang ada", "tenaga", "contoh", "10%"], label: "Berasaskan sumber" }
         ],
-        skema: `[Maksimum 2 Markah]\n• Sasaran yang realistik / tidak mustahil dicapai [1m]\n• Menggunakan sumber dan tenaga sepenuhnya [1m]`
+        skema: `• Sasaran realistik / tidak mustahil [1m]\n• Berdasarkan sumber sedia ada [1m]`
       },
       "s2c_ii": {
-        tajuk: "Soalan 2(c)(ii) - Objektif Jangka Masa",
+        tajuk: "Soalan 2(c)(ii)",
+        labelKompak: "2(c)(ii) Jangka Masa",
         teksSoalan: "Jelaskan ciri objektif: Jangka masa.",
         max: 2, bah: "A",
         kriteria: [
-          { words: ["tempoh masa", "tarikh", "carta gantt"], label: "Penetapan tempoh masa / tarikh" },
-          { words: ["jangka pendek", "jangka panjang", "3 bulan", "setahun"], label: "Jangka pendek / jangka panjang" }
+          { words: ["tempoh masa", "tarikh", "carta gantt"], label: "Penetapan tempoh / tarikh" },
+          { words: ["jangka pendek", "jangka panjang", "3 bulan", "setahun"], label: "Pendek / panjang" }
         ],
-        skema: `[Maksimum 2 Markah]\n• Tempoh masa / tarikh akhir ditetapkan dalam objektif [1m]\n• Melibatkan jangka pendek atau jangka panjang [1m]`
+        skema: `• Penetapan tempoh masa / tarikh akhir [1m]\n• Jangka pendek / panjang [1m]`
       },
       "s3a_i": {
-        tajuk: "Soalan 3(a)(i) - Fungsian Jualan",
+        tajuk: "Soalan 3(a)(i)",
+        labelKompak: "3(a)(i) Fungsian Jualan",
         teksSoalan: "Jelaskan peranan bahagian fungsian jualan.",
         max: 3, bah: "A",
         kriteria: [
-          { words: ["menjawab pertanyaan", "spesifikasi"], label: "Menjawab pertanyaan produk" },
-          { words: ["jualan bersemuka", "dalam talian", "online"], label: "Jualan bersemuka / online" },
-          { words: ["sebut harga", "rundingan", "diskaun"], label: "Sebut harga / runding diskaun" },
-          { words: ["nasihat teknikal"], label: "Khidmat nasihat teknikal" }
+          { words: ["menjawab pertanyaan", "spesifikasi"], label: "Jawab pertanyaan pelanggan" },
+          { words: ["jualan bersemuka", "dalam talian", "online"], label: "Jualan bersemuka/online" },
+          { words: ["sebut harga", "rundingan", "diskaun"], label: "Sebut harga & rundingan" }
         ],
-        skema: `[Maksimum 3 Markah]\n• Menjawab pertanyaan pelanggan tentang barang [1m]\n• Menjalankan jualan bersemuka atau dalam talian [1m]\n• Sediakan sebut harga & rundingan terma bayaran [1m]`
+        skema: `• Jawab pertanyaan produk [1m]\n• Jualan bersemuka/online [1m]\n• Sedia sebut harga & diskaun [1m]`
       },
       "s3a_ii": {
-        tajuk: "Soalan 3(a)(ii) - Fungsian R&D",
+        tajuk: "Soalan 3(a)(ii)",
+        labelKompak: "3(a)(ii) Fungsian R&D",
         teksSoalan: "Jelaskan peranan bahagian fungsian penyelidikan dan pembangunan (R&D).",
         max: 3, bah: "A",
         kriteria: [
-          { words: ["produk baharu", "inovasi"], label: "Pembangunan produk baharu" },
-          { words: ["menambah baik", "kualiti produk"], label: "Menambah baik kualiti produk" },
-          { words: ["kehendak pengguna", "kos efektif", "tidak membazir"], label: "Kos efektif / menepati pengguna" }
+          { words: ["produk baharu", "inovasi"], label: "Produk baharu" },
+          { words: ["menambah baik", "kualiti produk"], label: "Tambah baik kualiti" },
+          { words: ["kehendak pengguna", "kos efektif", "tidak membazir"], label: "Kos efektif" }
         ],
-        skema: `[Maksimum 3 Markah]\n• Rancang pembangunan produk baharu [1m]\n• Tambah baik produk sedia ada [1m]\n• Pastikan produk berkualiti & kos efektif [1m]`
+        skema: `• Rancang produk baharu [1m]\n• Tambah baik produk sedia ada [1m]\n• Jamin kualiti kos efektif [1m]`
       },
       "s3b": {
-        tajuk: "Soalan 3(b) - Interaksi Organisasi Luar",
+        tajuk: "Soalan 3(b)",
+        labelKompak: "3(b) Interaksi Organisasi Luar",
         teksSoalan: "Terangkan kepentingan interaksi dengan organisasi luar kepada perniagaan.",
         max: 4, bah: "A",
         kriteria: [
-          { words: ["jaringan perniagaan", "kelangsungan"], label: "Mewujudkan jaringan perniagaan" },
+          { words: ["jaringan perniagaan", "kelangsungan"], label: "Jaringan perniagaan" },
           { words: ["hubungan baik", "matlamat"], label: "Kukuhkan hubungan baik" },
-          { words: ["kerjasama strategik"], label: "Jalin kerjasama strategik" },
-          { words: ["menambah sumber", "bahan mentah", "pembiayaan"], label: "Menambah potensi sumber" }
+          { words: ["kerjasama strategik"], label: "Kerjasama strategik" },
+          { words: ["menambah sumber", "bahan mentah", "pembiayaan"], label: "Tambah sumber" }
         ],
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Jaringan perniagaan -> kelangsungan perniagaan [2m]\n• Kerjasama strategik -> sinergi antara pihak [2m]\n• Tambah potensi sumber -> bekalan bahan mentah [2m]`
+        skema: `• Jaringan perniagaan [2m]\n• Kerjasama strategik [2m]\n• Tambah potensi sumber [2m]`
       },
       "s4a": {
-        tajuk: "Soalan 4(a) - Faktor Penggajian Ayu",
+        tajuk: "Soalan 4(a)",
+        labelKompak: "4(a) Faktor Penggajian Ayu",
         teksSoalan: "Terangkan faktor yang mempengaruhi keputusan Ayu berpindah tempat kerja.",
         max: 4, bah: "A",
         kriteria: [
           { words: ["kemampuan organisasi", "gaji lebih tinggi", "kewangan kukuh"], label: "Kemampuan organisasi" },
           { words: ["faktor lokasi", "dekat dengan rumah", "jarak"], label: "Faktor lokasi" }
         ],
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Kemampuan organisasi: Syarikat baharu stabil & tawar gaji tinggi [2m]\n• Faktor lokasi: Tempat baharu lebih dekat dengan rumah [2m]`
+        skema: `• Kemampuan organisasi (gaji lebih tinggi) [2m]\n• Faktor lokasi (dekat dengan rumah) [2m]`
       },
       "s4b": {
-        tajuk: "Soalan 4(b) - Pengurusan Sumber Fizikal",
+        tajuk: "Soalan 4(b)",
+        labelKompak: "4(b) Urus Sumber Fizikal",
         teksSoalan: "Mengapakah sumber fizikal perlu diuruskan dengan baik?",
         max: 6, bah: "A",
         kriteria: [
-          { words: ["insurans", "kebakaran", "kecurian", "pampasan"], label: "Ambil insurans perlindungan" },
-          { words: ["kawalan keselamatan", "cctv", "pemadam api", "penggera"], label: "Kawalan keselamatan (CCTV/Alat)" },
+          { words: ["insurans", "kebakaran", "kecurian", "pampasan"], label: "Insurans perlindungan" },
+          { words: ["kawalan keselamatan", "cctv", "pemadam api", "penggera"], label: "Kawalan keselamatan" },
           { words: ["penyelenggaraan", "baik pulih", "berkala", "jadual"], label: "Penyelenggaraan berkala" },
-          { words: ["kelancaran", "produktiviti", "cegah kerosakan"], label: "Jamin kelancaran produktiviti" }
+          { words: ["kelancaran", "produktiviti", "cegah kerosakan"], label: "Kelancaran produktiviti" }
         ],
-        skema: `[Maksimum 6 Markah]\n• Ambil insurans lindungi risiko kebakaran/kecurian [2m]\n• Lengkapkan bangunan dengan alat kawalan (CCTV, alat pemadam) [2m]\n• Penyelenggaraan & baik pulih berkala ikut jadual [2m]\n• Jamin operasi lancar & elak kerosakan mengejut [2m]`
+        skema: `• Ambil insurans kebakaran/kecurian [2m]\n• Kawalan keselamatan (CCTV/Alat) [2m]\n• Penyelenggaraan berkala [2m]`
       },
       "s5a": {
-        tajuk: "Soalan 5(a) - Pembiayaan Ar-Rahnu",
+        tajuk: "Soalan 5(a)",
+        labelKompak: "5(a) Ar-Rahnu Pn Zehan",
         teksSoalan: "Apakah jenis sumber pembiayaan tersebut. Berikan alasan.",
         max: 5, bah: "A",
         kriteria: [
-          { words: ["ar-rahnu", "rahnu", "pajak gadai islam"], label: "Fakta Ar-Rahnu" },
-          { words: ["cagar", "barang berharga", "emas"], label: "Mencagarkan barang berharga" },
-          { words: ["mudah", "pantas", "tunai"], label: "Pantas dapat wang tunai" },
-          { words: ["patuh syariah", "tiada faedah", "upah simpan"], label: "Patuh syariah / upah simpan" },
-          { words: ["tebus semula"], label: "Boleh tebus semula barang" },
-          { words: ["margin", "75%", "90%"], label: "Margin pinjaman" }
+          { words: ["ar-rahnu", "rahnu", "pajak gadai islam"], label: "Ar-Rahnu" },
+          { words: ["cagar", "barang berharga", "emas"], label: "Cagar barang berharga" },
+          { words: ["mudah", "pantas", "tunai"], label: "Pantas dapat tunai" },
+          { words: ["patuh syariah", "tiada faedah", "upah simpan"], label: "Patuh syariah" },
+          { words: ["tebus semula"], label: "Boleh ditebus" }
         ],
-        skema: `[Maksimum 5 Markah: 1F + 4H]\n• Ar-Rahnu [1m]\n• Cagarkan barang berharga [1m]\n• Mudah & pantas dapat tunai [1m]\n• Patuh syariah / tanpa riba [1m]\n• Barang boleh ditebus semula [1m]`
+        skema: `• Ar-Rahnu [1m]\n• Cagarkan barang berharga [1m]\n• Mudah dapat tunai [1m]\n• Patuh syariah / tanpa riba [1m]\n• Boleh ditebus [1m]`
       },
       "s5b": {
-        tajuk: "Soalan 5(b) - Kegunaan Kunci Kira-kira",
+        tajuk: "Soalan 5(b)",
+        labelKompak: "5(b) Kegunaan Kunci Kira-kira",
         teksSoalan: "Jelaskan kegunaan Kunci Kira-kira kepada usahawan.",
         max: 5, bah: "A",
         kriteria: [
-          { words: ["kedudukan kewangan"], label: "Kedudukan kewangan perniagaan" },
+          { words: ["kedudukan kewangan"], label: "Kedudukan kewangan" },
           { words: ["aset", "aset semasa", "aset bukan semasa"], label: "Komponen aset" },
-          { words: ["tanggungan", "liabiliti", "hutang"], label: "Tanggungan hutang / liabiliti" },
-          { words: ["ekuiti pemilik", "modal", "untung bersih"], label: "Ekuiti pemilik & modal" },
-          { words: ["kecairan"], label: "Tahap kecairan tunai" }
+          { words: ["tanggungan", "liabiliti", "hutang"], label: "Liabiliti/hutang" },
+          { words: ["ekuiti pemilik", "modal", "untung bersih"], label: "Ekuiti pemilik" },
+          { words: ["kecairan"], label: "Kecairan tunai" }
         ],
-        skema: `[Maksimum 5 Markah]\n• Mengetahui kedudukan kewangan perniagaan [1m]\n• Mengetahui aset perniagaan [1m]\n• Mengetahui tanggungan liabiliti/hutang [1m]\n• Mengetahui ekuiti pemilik/modal [1m]\n• Menilai kecairan [1m]`
+        skema: `• Tahu kedudukan kewangan [1m]\n• Tahu nilai aset [1m]\n• Tahu liabiliti/hutang [1m]\n• Tahu ekuiti pemilik/modal [1m]\n• Nilai kecairan [1m]`
       },
       "s6a": {
-        tajuk: "Soalan 6(a) - Beza Aset Semasa & Bukan Semasa",
+        tajuk: "Soalan 6(a)",
+        labelKompak: "6(a) Beza Aset Semasa & Bukan Semasa",
         teksSoalan: "Bezakan aset semasa dengan aset bukan semasa.",
         max: 4, bah: "A",
         kriteria: [
-          { words: ["kurang setahun", "kurang 1 tahun"], label: "Hayat Aset Semasa < 1 tahun" },
-          { words: ["lebih setahun", "lebih 1 tahun"], label: "Hayat Bukan Semasa > 1 tahun" },
-          { words: ["kecairan tinggi"], label: "Kecairan tinggi (Semasa)" },
-          { words: ["kecairan rendah"], label: "Kecairan rendah (Bukan Semasa)" },
-          { words: ["tunai", "stok", "penghutang"], label: "Contoh Aset Semasa" },
-          { words: ["kenderaan", "mesin", "bangunan"], label: "Contoh Bukan Semasa" }
+          { words: ["kurang setahun", "kurang 1 tahun"], label: "Hayat Semasa < 1 thn" },
+          { words: ["lebih setahun", "lebih 1 tahun"], label: "Hayat Bukan Semasa > 1 thn" },
+          { words: ["kecairan tinggi"], label: "Kecairan tinggi" },
+          { words: ["kecairan rendah"], label: "Kecairan rendah" }
         ],
-        skema: `[Maksimum 4 Markah]\n• Hayat: Semasa < 1 tahun | Bukan semasa > 1 tahun [2m]\n• Kecairan: Semasa tinggi | Bukan semasa rendah [2m]`
+        skema: `• Hayat: Semasa < 1 thn | Bukan semasa > 1 thn [2m]\n• Kecairan: Semasa tinggi | Bukan semasa rendah [2m]`
       },
       "s6b_i": {
-        tajuk: "Soalan 6(b)(i) - Akta Syarikat",
+        tajuk: "Soalan 6(b)(i)",
+        labelKompak: "6(b)(i) Akta Syarikat",
         teksSoalan: "Kenal pasti akta penubuhan perniagaan tersebut?",
         max: 1, bah: "A",
         kriteria: [
@@ -1082,143 +1110,155 @@
         skema: `• Akta Syarikat 1965 / 2016 [1m]`
       },
       "s6b_ii": {
-        tajuk: "Soalan 6(b)(ii) - Prosedur Pemerbadanan Syarikat",
+        tajuk: "Soalan 6(b)(ii)",
+        labelKompak: "6(b)(ii) Prosedur Pemerbadanan",
         teksSoalan: "Jelaskan prosedur pemerbadanan perniagaan Bellez Sdn Bhd.",
         max: 5, bah: "A",
         kriteria: [
-          { words: ["carian nama", "kelulusan nama", "ssm"], label: "Permohonan carian nama SSM" },
+          { words: ["carian nama", "kelulusan nama", "ssm"], label: "Carian nama SSM" },
           { words: ["borang", "permohonan pendaftaran", "seksyen 14"], label: "Borang Seksyen 14" },
-          { words: ["butiran pemegang", "alamat berdaftar", "jenis perniagaan"], label: "Lengkapkan butiran syarikat" },
-          { words: ["notis pemerbadanan"], label: "Notis Pemerbadanan SSM" },
-          { words: ["setiausaha syarikat", "30 hari"], label: "Lantik Setiausaha Syarikat 30 hari" }
+          { words: ["butiran pemegang", "alamat berdaftar", "jenis perniagaan"], label: "Lengkap butiran" },
+          { words: ["notis pemerbadanan"], label: "Notis Pemerbadanan" },
+          { words: ["setiausaha syarikat", "30 hari"], label: "Lantik Setiausaha dlm 30 hari" }
         ],
-        skema: `[Maksimum 5 Markah]\n• Carian & kelulusan nama SSM [1m]\n• Isi Borang Pendaftaran (Seksyen 14) [1m]\n• Lengkapkan butiran pemegang syer & perniagaan [1m]\n• Terima Notis Pemerbadanan SSM [1m]\n• Lantik Setiausaha Syarikat dlm 30 hari [1m]`
+        skema: `• Carian & kelulusan nama SSM [1m]\n• Isi Borang Pendaftaran (Sek 14) [1m]\n• Lengkap butiran pemegang syer [1m]\n• Terima Notis Pemerbadanan [1m]\n• Lantik Setiausaha Syarikat 30 hari [1m]`
       },
       "s7a": {
-        tajuk: "Soalan 7(a) - Hitung TPM Baharu",
-        teksSoalan: "Berdasarkan graf TPM, hitungkan TPM baharu jika harga jual seunit RM8.00 dan kos berubah seunit meningkat 30% daripada RM5.00.",
+        tajuk: "Soalan 7(a)",
+        labelKompak: "7(a) Hitung TPM Baharu",
+        teksSoalan: "Berdasarkan graf TPM, hitungkan TPM baharu jika harga jual RM8.00 dan kos berubah naik 30% daripada RM5.00.",
         max: 5, bah: "B",
         kriteria: [
           { words: ["6.50", "rm6.50", "rm 6.50"], label: "Kos Berubah Baru = RM6.50" },
           { words: ["12000", "12 000"], label: "Kos Tetap = RM12,000" },
-          { words: ["1.50", "rm1.50"], label: "Margin Caruman = RM1.50" },
+          { words: ["1.50", "rm1.50"], label: "Margin = RM1.50" },
           { words: ["8000", "8 000 unit", "8000 unit"], label: "TPM Baru = 8,000 unit" }
         ],
-        skema: `[5 Markah Lengkap]\n• Kos berubah baru: RM5.00 + RM1.50 = RM6.50 [2m]\n• Formula TPM: Kos Tetap / (Harga Jual - Kos Berubah) [1m]\n• Pengiraan: RM12,000 / (RM8 - RM6.50) [1m]\n• Jawapan: 8,000 unit [1m]`
+        skema: `• Kos berubah baru: RM6.50 [2m]\n• Formula & jalan kira: RM12,000 / (RM8 - RM6.50) [2m]\n• TPM Baru: 8,000 unit [1m]`
       },
       "s7b": {
-        tajuk: "Soalan 7(b) - Langkah Atasi Kos Berubah",
+        tajuk: "Soalan 7(b)",
+        labelKompak: "7(b) Langkah Atasi Kos Berubah",
         teksSoalan: "Cadangkan langkah yang sesuai untuk mengatasi masalah peningkatan kos berubah tersebut.",
         max: 5, bah: "B",
         kriteria: [
-          { words: ["pembekal yang lebih murah", "pembekal murah"], label: "Cari pembekal murah" },
-          { words: ["rundingan semula", "kontrak", "diskaun pukal"], label: "Rundingan kontrak / diskaun" },
-          { words: ["teknologi moden", "mesin"], label: "Guna teknologi elak pembaziran" },
-          { words: ["r&d", "penyelidikan"], label: "R&D formula kos efektif" },
-          { words: ["promosi jualan", "diskaun harga"], label: "Tingkatkan promosi jualan" }
+          { words: ["pembekal yang lebih murah", "pembekal murah"], label: "Pembekal lebih murah" },
+          { words: ["rundingan semula", "kontrak", "diskaun pukal"], label: "Runding diskaun pukal" },
+          { words: ["teknologi moden", "mesin"], label: "Guna teknologi elak sisa" },
+          { words: ["r&d", "penyelidikan"], label: "R&D formula jimat" },
+          { words: ["promosi jualan", "diskaun harga"], label: "Tingkat promosi" }
         ],
-        skema: `[Maksimum 5 Markah]\n• Cari pembekal bahan mentah lebih murah [1m]\n• Runding semula kontrak belian pukal [1m]\n• Guna teknologi kurangkan sisa [1m]\n• Tingkatkan aktiviti promosi & jualan [1m]`
+        skema: `• Cari pembekal murah [1m]\n• Runding kontrak belian pukal [1m]\n• Guna teknologi canggih [1m]\n• Tingkatkan promosi [1m]`
       },
       "s7c": {
-        tajuk: "Soalan 7(c) - Kewajaran Pembiayaan Luaran",
+        tajuk: "Soalan 7(c)",
+        labelKompak: "7(c) Wajar Pembiayaan Luaran",
         teksSoalan: "Sebagai pemilik, Pn. Ainul telah memilih pembiayaan luaran bagi mengembangkan perniagaannya. Wajarkah tindakan beliau? Berikan alasan.",
         max: 5, bah: "B",
         kriteria: [
-          { words: ["wajar"], label: "Pendirian: Wajar" },
-          { words: ["agensi kerajaan", "institusi kewangan", "bank"], label: "Sumber agensi/bank" },
-          { words: ["tempoh bayaran", "fleksibel"], label: "Tempoh bayar balik fleksibel" },
-          { words: ["faedah rendah", "tiada faedah", "tanpa faedah"], label: "Faedah berpatutan / rendah" },
-          { words: ["latihan", "khidmat nasihat"], label: "Bimbingan & latihan keusahawanan" }
+          { words: ["wajar"], label: "Wajar" },
+          { words: ["agensi kerajaan", "institusi kewangan", "bank"], label: "Sumber pembiayaan" },
+          { words: ["tempoh bayaran", "fleksibel"], label: "Bayaran fleksibel" },
+          { words: ["faedah rendah", "tiada faedah", "tanpa faedah"], label: "Faedah rendah" },
+          { words: ["latihan", "khidmat nasihat"], label: "Latihan & bimbingan" }
         ],
-        skema: `[Maksimum 5 Markah: Pendirian 1m + 4 Alasan]\n• Wajar [1m]\n• Pinjaman mengikut keperluan modal besar [1m]\n• Ansuran berpatutan & tempoh fleksibel [1m]\n• Kadar faedah rendah [1m]\n• Bimbingan keusahawanan disediakan [1m]`
+        skema: `• Wajar [1m]\n• Modal besar disesuaikan [1m]\n• Bayaran fleksibel & berpatutan [1m]\n• Faedah rendah / tiada faedah [1m]\n• Bimbingan usahawan [1m]`
       },
       "s8a": {
-        tajuk: "Soalan 8(a) - Sumbangan Ann Enterprise",
-        teksSoalan: "Jelaskan sumbangan sektor perniagaan yang diusahakan oleh Ann Enterprise kepada negara.",
+        tajuk: "Soalan 8(a)",
+        labelKompak: "8(a) Sumbangan Ann Enterprise",
+        teksSoalan: "Jelaskan sumbangan sektor pelancongan Ann Enterprise kepada negara.",
         max: 4, bah: "B",
         kriteria: [
-          { words: ["pendapatan negara", "mata wang asing", "wang asing"], label: "Aliran masuk mata wang asing" },
-          { words: ["peluang pekerjaan", "pemandu pelancong", "taraf hidup"], label: "Peluang pekerjaan tempatan" },
-          { words: ["budaya", "sarawak", "tempat menarik", "makanan"], label: "Promosi budaya & warisan Sarawak" },
+          { words: ["pendapatan negara", "mata wang asing", "wang asing"], label: "Mata wang asing" },
+          { words: ["peluang pekerjaan", "pemandu pelancong", "taraf hidup"], label: "Peluang pekerjaan" },
+          { words: ["budaya", "sarawak", "tempat menarik", "makanan"], label: "Promosi budaya Sarawak" },
           { words: ["sektor", "hotel", "pengangkutan"], label: "Rangsang sektor rantaian" }
         ],
-        skema: `[Maksimum 4 Markah]\n• Jana pendapatan negara (mata wang asing) [1m]\n• Sedia peluang pekerjaan (pemandu pelancong) [1m]\n• Promosi budaya etnik Sarawak ke dunia [1m]\n• Rangsang sektor hotel & pengangkutan [1m]`
+        skema: `• Aliran mata wang asing [1m]\n• Sedia peluang pekerjaan [1m]\n• Promosi budaya Sarawak [1m]\n• Rangsang sektor sokongan [1m]`
       },
       "s8b": {
-        tajuk: "Soalan 8(b) - Ciri Usahawan Ann Maria",
+        tajuk: "Soalan 8(b)",
+        labelKompak: "8(b) Ciri Usahawan Ann Maria",
         teksSoalan: "Terangkan ciri-ciri keperibadian Ann Maria.",
         max: 6, bah: "B",
         kriteria: [
           { words: ["kreatif", "inovatif", "pakej komprehensif"], label: "Kreatif & inovatif" },
-          { words: ["berani mengambil risiko", "kolaborasi"], label: "Berani mengambil risiko" },
-          { words: ["pandai mengambil peluang", "tahun melawat malaysia"], label: "Pandai mengambil peluang" },
+          { words: ["berani mengambil risiko", "kolaborasi"], label: "Berani ambil risiko" },
+          { words: ["pandai mengambil peluang", "tahun melawat malaysia"], label: "Pandai ambil peluang" },
           { words: ["fleksibel", "menyesuaikan"], label: "Fleksibel" }
         ],
-        skema: `[Maksimum 6 Markah: 3F + 3H berpasangan]\n• Kreatif & inovatif -> Tawar pakej komprehensif [2m]\n• Pandai ambil peluang -> Rebut Tahun Melawat Malaysia [2m]\n• Berani ambil risiko -> Jalin kolaborasi hotel/resort [2m]`
+        skema: `• Kreatif & inovatif (pakej komprehensif) [2m]\n• Pandai ambil peluang (TMM 2026) [2m]\n• Berani ambil risiko (kolaborasi) [2m]`
       },
       "s8c": {
-        tajuk: "Soalan 8(c) - Faktor Luaran",
-        teksSoalan: "Anda bersetuju faktor luaran dapat membantu perniagaan Ann Enterprise dalam menyahut kempen kerajaan? Justifikasi.",
+        tajuk: "Soalan 8(c)",
+        labelKompak: "8(c) Faktor Luaran Membantu",
+        teksSoalan: "Anda bersetuju faktor luaran membantu Ann Enterprise menyahut kempen kerajaan? Justifikasi.",
         max: 5, bah: "B",
         kriteria: [
-          { words: ["teknologi", "promosi digital", "pemasaran"], label: "Faktor teknologi" },
-          { words: ["politik", "stabil"], label: "Faktor kestabilan politik" },
-          { words: ["dasar kerajaan", "insentif"], label: "Dasar sokongan kerajaan" },
-          { words: ["sosiobudaya", "etnik"], label: "Faktor sosiobudaya" },
+          { words: ["teknologi", "promosi digital", "pemasaran"], label: "Teknologi digital" },
+          { words: ["politik", "stabil"], label: "Politik stabil" },
+          { words: ["dasar kerajaan", "insentif"], label: "Dasar & insentif kerajaan" },
+          { words: ["sosiobudaya", "etnik"], label: "Kepelbagaian sosiobudaya" },
           { words: ["ekonomi", "kukuh"], label: "Kestabilan ekonomi" }
         ],
-        skema: `[Maksimum 5 Markah]\n• Teknologi: Promosi meluas di media digital [1m]\n• Politik: Negara stabil tarik pelancong asing [1m]\n• Dasar kerajaan: Insentif kempen pelancongan [1m]\n• Sosiobudaya: Kepelbagaian etnik tarikan unik [1m]`
+        skema: `• Teknologi: Promosi digital meluas [1m]\n• Politik stabil tarik pelancong [1m]\n• Dasar kerajaan beri insentif [1m]\n• Sosiobudaya etnik tarikan unik [1m]`
       },
       "s9a": {
-        tajuk: "Soalan 9(a) - Ciri PLT",
+        tajuk: "Soalan 9(a)",
+        labelKompak: "9(a) Ciri PLT",
         teksSoalan: "Jelaskan ciri-ciri bentuk pemilikan perniagaan SPAce Legasi PLT.",
         max: 5, bah: "B",
         kriteria: [
           { words: ["entiti berasingan", "menyaman", "disaman"], label: "Entiti berasingan" },
           { words: ["liabiliti terhad", "modal"], label: "Liabiliti terhad" },
           { words: ["hayat berterusan"], label: "Hayat berterusan" },
-          { words: ["rakan kongsi", "2 orang"], label: "Keanggotaan rakan kongsi" }
+          { words: ["rakan kongsi", "2 orang"], label: "Keahlian rakan kongsi" }
         ],
-        skema: `[Maksimum 5 Markah]\n• Entiti berasingan (hak saman/disaman) [2m]\n• Liabiliti terhad setakat modal [2m]\n• Hayat berterusan [1m]`
+        skema: `• Entiti berasingan (hak saman/disaman) [2m]\n• Liabiliti terhad setakat modal [2m]\n• Hayat berterusan [1m]`
       },
       "s9b": {
-        tajuk: "Soalan 9(b) - Prosedur Sumber Teknologi",
-        teksSoalan: "Bagaimanakah prosedur mengurus sumber teknologi yang perlu dilaksanakan oleh SPAce Legasi PLT?",
+        tajuk: "Soalan 9(b)",
+        labelKompak: "9(b) Prosedur Sumber Teknologi",
+        teksSoalan: "Bagaimanakah prosedur mengurus sumber teknologi SPAce Legasi PLT?",
         max: 4, bah: "B",
         kriteria: [
-          { words: ["hak cipta terpelihara", "hak eksklusif"], label: "Daftar Hak Cipta Terpelihara" },
+          { words: ["hak cipta terpelihara", "hak eksklusif"], label: "Daftar Hak Cipta" },
           { words: ["akta hak cipta 1987", "akta hak cipta"], label: "Akta Hak Cipta 1987" },
-          { words: ["myipo"], label: "Permohonan ke MyIPO" },
-          { words: ["menghalang peniruan", "melindungi"], label: "Halang peniruan pesaing" }
+          { words: ["myipo"], label: "Mohon ke MyIPO" },
+          { words: ["menghalang peniruan", "melindungi"], label: "Halang tiruan" }
         ],
-        skema: `[Maksimum 4 Markah]\n• Daftar Hak Cipta Terpelihara di MyIPO [1m]\n• Perlindungan Akta Hak Cipta 1987 [1m]\n• Hak eksklusif kepada pencipta sistem AI [1m]\n• Lindungi karya daripada ditiru pesaing [1m]`
+        skema: `• Daftar Hak Cipta di MyIPO [1m]\n• Lindung Akta Hak Cipta 1987 [1m]\n• Hak eksklusif elak ditiru pesaing [2m]`
       },
       "s9c": {
-        tajuk: "Soalan 9(c) - Pengelolaan Sumber Manusia PLT",
+        tajuk: "Soalan 9(c)",
+        labelKompak: "9(c) Pengelolaan Sumber Manusia PLT",
         teksSoalan: "Pada pandangan anda, adakah aspek pengelolaan sumber manusia yang diamalkan berkesan untuk SPAce Legasi PLT? Berikan komen.",
         max: 6, bah: "B",
         kriteria: [
-          { words: ["ya", "berkesan"], label: "Pendirian Berkesan" },
-          { words: ["gaji yang kompetitif", "gaji kompetitif", "motivasi"], label: "Gaji kompetitif naikkan motivasi" },
+          { words: ["ya", "berkesan"], label: "Berkesan" },
+          { words: ["gaji yang kompetitif", "gaji kompetitif", "motivasi"], label: "Gaji kompetitif" },
           { words: ["ganjaran", "pertandingan", "inovasi"], label: "Ganjaran galak inovasi" },
-          { words: ["latihan", "upskilling", "reskilling"], label: "Latihan upskilling/reskilling" },
-          { words: ["tidak", "kurang mahir", "perisian tidak sah", "sop"], label: "Kritikan integriti/perisian haram" }
+          { words: ["latihan", "upskilling", "reskilling"], label: "Latihan kemahiran" },
+          { words: ["tidak", "kurang mahir", "perisian tidak sah", "sop"], label: "Isu perisian haram" }
         ],
-        skema: `[Maksimum 6 Markah: Berikan komen matang]\n• Gaji kompetitif menarik bakat & tingkatkan motivasi [1m]\n• Ganjaran pertandingan menggalakkan inovasi [1m]\n• Latihan upskilling & reskilling baiki kemahiran AI [1m]\n• Namun isu pekerja guna perisian tidak sah jejas integriti [1m]`
+        skema: `• Gaji kompetitif tarik bakat & motivasi [2m]\n• Ganjaran pertandingan galak inovasi [2m]\n• Latihan kemahiran (upskilling/reskilling) [2m]`
       },
       "s10a": {
-        tajuk: "Soalan 10(a) - Pendorong Encik Razif",
+        tajuk: "Soalan 10(a)",
+        labelKompak: "10(a) Pendorong Encik Razif",
         teksSoalan: "Terangkan faktor yang mendorong Encik Razif dalam memulakan perniagaan Kedai Perabot Makmur.",
         max: 4, bah: "C",
         kriteria: [
           { words: ["modal", "simpanan", "50,000", "50000"], label: "Modal simpanan RM50,000" },
-          { words: ["kemahiran", "minat", "pengalaman", "kilang perabot"], label: "Minat & pengalaman pertukangan" },
-          { words: ["lokasi", "kuantan", "strategik"], label: "Lokasi bandar Kuantan" }
+          { words: ["kemahiran", "minat", "pengalaman", "kilang perabot"], label: "Minat & pengalaman kilang" },
+          { words: ["lokasi", "kuantan", "strategik"], label: "Lokasi Kuantan" }
         ],
-        skema: `[Maksimum 4 Markah: 2F + 2H berpasangan]\n• Modal: Simpanan sendiri RM50,000 [2m]\n• Kemahiran: Minat pertukangan kayu & pengalaman kerja kilang [2m]\n• Lokasi: Beroperasi di bandar Kuantan [2m]`
+        skema: `• Modal simpanan sendiri RM50,000 [2m]\n• Minat & pengalaman pertukangan kayu [2m]`
       },
       "s10b": {
-        tajuk: "Soalan 10(b) - Nisbah Kecairan (Nisbah Semasa)",
+        tajuk: "Soalan 10(b)",
+        labelKompak: "10(b) Nisbah Kecairan",
         teksSoalan: "Hitungkan nisbah kecairan bagi Kedai Perabot Makmur.",
         max: 3, bah: "C",
         kriteria: [
@@ -1227,45 +1267,47 @@
           { words: ["43,000", "43000"], label: "Liabiliti Semasa = RM43,000" },
           { words: ["3.09", "3.09:1", "3.09 : 1"], label: "Jawapan: 3.09 : 1" }
         ],
-        skema: `[3 Markah Lengkap]\n• Formula: Aset Semasa / Liabiliti Semasa [1m]\n• RM133,000 / RM43,000 [1m]\n• Jawapan: 3.09 : 1 [1m]`
+        skema: `• Formula: Aset Semasa / Liabiliti Semasa [1m]\n• RM133,000 / RM43,000 [1m]\n• Jawapan: 3.09 : 1 [1m]`
       },
       "s10c": {
-        tajuk: "Soalan 10(c) - Agensi Pembiayaan",
+        tajuk: "Soalan 10(c)",
+        labelKompak: "10(c) Agensi Pembiayaan",
         teksSoalan: "Apakah agensi kerajaan yang sesuai untuk membiayai perniagaan Encik Razif? Berikan alasan.",
         max: 4, bah: "C",
         kriteria: [
-          { words: ["mara", "majlis amanah rakyat", "punb"], label: "Agensi MARA / PUNB" },
-          { words: ["bumiputera"], label: "Syarat Bumiputera" },
-          { words: ["mesin", "gudang", "modal tambahan", "200,000", "200000"], label: "Sesuai modal RM200,000 beli mesin" },
-          { words: ["spim", "splim", "prosper"], label: "Skim pembiayaan agensi" }
+          { words: ["mara", "majlis amanah rakyat", "punb"], label: "MARA / PUNB" },
+          { words: ["bumiputera"], label: "Usahawan Bumiputera" },
+          { words: ["mesin", "gudang", "modal tambahan", "200,000", "200000"], label: "Modal RM200,000 mesin" },
+          { words: ["spim", "splim", "prosper"], label: "Skim pembiayaan" }
         ],
-        skema: `[Maksimum 4 Markah: 1 Agensi + 3 Alasan]\n• MARA / PUNB [1m]\n• Layak kerana usahawan Bumiputera [1m]\n• Skim pembiayaan sesuai modal RM200,000 [1m]\n• Beli mesin moden & sewa gudang [1m]`
+        skema: `• MARA / PUNB [1m]\n• Usahawan Bumiputera [1m]\n• Skim sesuai had RM200,000 [1m]\n• Beli mesin moden & sewa gudang [1m]`
       },
       "s10d": {
-        tajuk: "Soalan 10(d) - Bantuan MATRADE",
+        tajuk: "Soalan 10(d)",
+        labelKompak: "10(d) Bantuan MATRADE",
         teksSoalan: "Bagaimanakah MATRADE dapat membantu Kedai Perabot Makmur berkembang ke luar negara?",
         max: 4, bah: "C",
         kriteria: [
-          { words: ["pasaran baharu", "mencari kawasan"], label: "Cari pasaran baharu luar negara" },
-          { words: ["menemukan pengeksport", "pengimport", "singapura", "brunei"], label: "Temukan pengimport Singapura/Brunei" },
-          { words: ["misi perdagangan"], label: "Misi perdagangan luar negara" },
+          { words: ["pasaran baharu", "mencari kawasan"], label: "Pasaran luar negara baharu" },
+          { words: ["menemukan pengeksport", "pengimport", "singapura", "brunei"], label: "Temukan pengimport serantau" },
+          { words: ["misi perdagangan"], label: "Misi perdagangan antarabangsa" },
           { words: ["pameran perdagangan antarabangsa", "promosi antarabangsa"], label: "Pameran antarabangsa" }
         ],
-        skema: `[Maksimum 4 Markah]\n• Cari pasaran eksport baharu [1m]\n• Temukan pengeksport dengan pengimport luar [1m]\n• Anjurkan misi perdagangan antarabangsa [1m]\n• Sertai pameran perdagangan perabot dunia [1m]`
+        skema: `• Temukan pengimport luar negara [1m]\n• Anjurkan misi perdagangan luar [1m]\n• Sertai pameran antarabangsa [1m]\n• Khidmat nasihat eksport [1m]`
       },
       "s10e": {
-        tajuk: "Soalan 10(e) - Pilihan Kaedah Pengiklanan",
+        tajuk: "Soalan 10(e)",
+        labelKompak: "10(e) Pilihan Pengiklanan",
         teksSoalan: "Pada pendapat anda, kaedah pengiklanan yang manakah sesuai dengan perniagaan Encik Razif? Kemukakan alasan.",
         max: 5, bah: "C",
         kriteria: [
-          { words: ["media elektronik", "elektronik"], label: "Pilihan Media Elektronik" },
-          { words: ["liputan meluas", "24 jam", "singapura", "brunei"], label: "Liputan global 24 jam" },
-          { words: ["audio", "video", "visual", "gambar"], label: "Video/Audio visual menarik" },
-          { words: ["kos rendah", "jimat"], label: "Kos lebih murah & berkesan" },
-          { words: ["interaksi", "dua hala"], label: "Wujud interaksi pelanggan" },
-          { words: ["media cetak", "terperinci", "disimpan"], label: "Pilihan Media Cetak (Alternatif)" }
+          { words: ["media elektronik", "elektronik"], label: "Media Elektronik" },
+          { words: ["liputan meluas", "24 jam", "singapura", "brunei"], label: "Liputan luas 24 jam" },
+          { words: ["audio", "video", "visual", "gambar"], label: "Video/audio visual menarik" },
+          { words: ["kos rendah", "jimat"], label: "Kos murah & interaktif" },
+          { words: ["interaksi", "dua hala"], label: "Interaksi pelanggan" }
         ],
-        skema: `[Maksimum 5 Markah: Pilihan 1m + 4 Alasan]\n• Media Elektronik [1m]\n• Liputan meluas hingga Singapura & Brunei [1m]\n• Papar audio, video visual perabot menarik [1m]\n• Kos lebih rendah berbanding media cetak [1m]\n• Beroperasi 24 jam & wujud interaksi [1m]`
+        skema: `• Media Elektronik [1m]\n• Liputan luas ke luar negara sepanjang 24 jam [1m]\n• Video & gambar visual perabot menarik [1m]\n• Kos lebih rendah & wujud interaksi terus [2m]`
       }
     };
 
@@ -1734,10 +1776,13 @@
           </td>
           <td class="py-2.5 px-3 text-center">
             <div class="flex items-center justify-center space-x-1.5">
-              <button onclick="pilihCalonDanScroll('${murid.nama}')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center" title="Buka Semakan">
+              <button onclick="pilihCalonDanScroll('${murid.nama}')" class="px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center" title="Buka Semakan Guru">
                 <i class="fa-solid fa-pen-to-square mr-1"></i> Tanda
               </button>
-              <button onclick="cetakSkripCalon('${murid.nama}')" class="px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center" title="Cetak Skrip & Penandaan Merah">
+              <button onclick="cetakKompakCalon('${murid.nama}')" class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center" title="Cetak Lembaran Kompak 1 A4 (Bincang Murid)">
+                <i class="fa-solid fa-file-contract"></i>
+              </button>
+              <button onclick="cetakSkripCalon('${murid.nama}')" class="px-2.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-lg transition shadow-xs flex items-center" title="Cetak Skrip Penuh Lengkap Skema">
                 <i class="fa-solid fa-print"></i>
               </button>
             </div>
@@ -2019,30 +2064,26 @@ ${itm.skema}
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-        alert(`Markah & ulasan bagi calon ${m.nama} telah berjaya direkodkan ke Google Sheet! Calon kini boleh melihat dan mencetak skrip bertanda.`);
+        alert(`Markah & ulasan bagi calon ${m.nama} telah berjaya direkodkan ke Google Sheet! Calon kini boleh melihat dan mencetak.`);
       } catch (e) {
         alert("Markah disimpan secara setempat di peranti guru.");
       }
     }
 
-    // ==============================================================
-    // ENJIN CETAKAN SKRIP SOALAN, JAWAPAN & PENANDAAN GURU (MERAH)
-    // ==============================================================
-    function cetakSkripCalon(namaCalon) {
+    // =========================================================================
+    // 1. MENU CETAKAN KOMPAK 1 MUKA SURAT A4 (JAWAPAN & MARKAH DAKWAT MERAH)
+    // =========================================================================
+    function cetakKompakCalon(namaCalon) {
       if (!namaCalon) {
         alert("Sila pilih calon terlebih dahulu.");
         return;
       }
 
       const m = SENARAI_MURID.find(x => x.nama === namaCalon);
-      if (!m) {
-        alert("Calon tidak dijumpai.");
-        return;
-      }
-
+      if (!m) { alert("Calon tidak dijumpai."); return; }
       const normIc = normalizeIc(m.ic);
 
-      // Dapatkan jawapan murid
+      // Ambil jawapan
       let answers = storedSubmissions[normIc] || {};
       if (Object.keys(answers).length === 0) {
         const local = localStorage.getItem(`jawapan_${normIc}`) || localStorage.getItem(`hantar_${normIc}`);
@@ -2054,14 +2095,149 @@ ${itm.skema}
         }
       }
 
-      // Dapatkan markah dan ulasan guru
+      // Ambil markah
       let marksData = null;
       const localMark = localStorage.getItem(`markah_${normIc}`);
       if (localMark) {
         try { marksData = JSON.parse(localMark); } catch(e){}
       }
 
-      // Bina kandungan cetakan khusus
+      let markahA = marksData ? (marksData.markahA || 0) : "-";
+      let markahB = marksData ? (marksData.markahB || 0) : "-";
+      let markahC = marksData ? (marksData.markahC || 0) : "-";
+      let jumlahMarkah = marksData ? (marksData.total || marksData.jumlahMarkah || 0) : "-";
+      let gred = marksData ? (marksData.gred || "-") : "-";
+      let ulasan = marksData ? (marksData.ulasan || "(Tiada ulasan)") : "(Belum disemak)";
+      let itemScores = (marksData && (marksData.scores || marksData.markahPerItem)) ? (marksData.scores || marksData.markahPerItem) : {};
+
+      function formatItemKompak(k) {
+        const itm = SKEMA_DATA[k];
+        const ans = answers[k] ? String(answers[k]).trim() : "—";
+        const score = itemScores[k];
+
+        let tandaSimbol = "";
+        if (score !== undefined) {
+          if (score === itm.max) {
+            tandaSimbol = `<span class="tanda-betul-merah">✓</span> <span class="badge-markah-merah">${score}/${itm.max}m</span>`;
+          } else if (score > 0) {
+            tandaSimbol = `<span class="tanda-betul-merah">✓/</span> <span class="badge-markah-merah">${score}/${itm.max}m</span>`;
+          } else {
+            tandaSimbol = `<span class="tanda-salah-merah">✗</span> <span class="badge-markah-merah">0/${itm.max}m</span>`;
+          }
+        } else {
+          tandaSimbol = `<span class="badge-markah-merah">-/${itm.max}m</span>`;
+        }
+
+        return `
+          <div class="border-b border-slate-200 pb-1 mb-1 leading-tight text-[8pt]">
+            <div class="flex justify-between items-center font-bold">
+              <span class="text-slate-900">${itm.labelKompak}</span>
+              <div class="whitespace-nowrap">${tandaSimbol}</div>
+            </div>
+            <div class="text-slate-700 font-sans italic mt-0.5 line-clamp-3 bg-slate-50 p-1 rounded border border-slate-200">
+              ${ans}
+            </div>
+          </div>
+        `;
+      }
+
+      // Bahagian A: S1 hingga S6
+      let kolum1Html = "";
+      for (let sNo = 1; sNo <= 6; sNo++) {
+        kolum1Html += `<div class="bg-slate-100 px-1.5 py-0.5 font-bold text-slate-800 text-[8pt] rounded mb-1">SOALAN ${sNo}</div>`;
+        SOALAN_MAP[sNo].forEach(k => {
+          kolum1Html += formatItemKompak(k);
+        });
+      }
+
+      // Bahagian B & C: S7 hingga S10
+      let kolum2Html = "";
+      for (let sNo = 7; sNo <= 10; sNo++) {
+        let bah = (sNo <= 9) ? "B" : "C";
+        kolum2Html += `<div class="bg-slate-100 px-1.5 py-0.5 font-bold text-slate-800 text-[8pt] rounded mb-1">SOALAN ${sNo} (BAHAGIAN ${bah})</div>`;
+        SOALAN_MAP[sNo].forEach(k => {
+          kolum2Html += formatItemKompak(k);
+        });
+      }
+
+      const printBox = document.getElementById("printableExamScript");
+      printBox.innerHTML = `
+        <div class="text-[8pt] leading-tight font-sans">
+          <!-- HEADER KOMPAK -->
+          <div class="border-b-2 border-slate-900 pb-1.5 mb-2 flex justify-between items-end">
+            <div>
+              <h1 class="font-black text-sm uppercase text-slate-900">MODUL PINTAS PERCUBAAN SPM 2026: PERNIAGAAN K2</h1>
+              <p class="text-[7.5pt] text-slate-600">LEMBARAN PERBINCANGAN JAWAPAN & PENANDAAN DAKWAT MERAH (1 MUKA SURAT A4)</p>
+            </div>
+            <div class="text-right">
+              <span class="font-mono font-bold text-[7.5pt] bg-slate-800 text-white px-2 py-0.5 rounded">LEMBARAN GURU</span>
+            </div>
+          </div>
+
+          <!-- KAD MAKLUMAT CALON & MARKAH PEN MERAH (1 BARIS) -->
+          <div class="grid grid-cols-12 gap-1.5 p-1.5 border pen-merah-border pen-merah-bg rounded-lg mb-2 text-[8pt]">
+            <div class="col-span-5">
+              <div><strong>CALON:</strong> ${m.nama}</div>
+              <div><strong>NO KP:</strong> <span class="font-mono">${m.ic}</span></div>
+            </div>
+            <div class="col-span-4 flex items-center justify-around text-center bg-white rounded border pen-merah-border p-1">
+              <div><span class="text-[6.5pt] block text-slate-500 font-bold uppercase">BAH A</span><strong class="pen-merah-teks text-[9pt]">${markahA}</strong></div>
+              <div><span class="text-[6.5pt] block text-slate-500 font-bold uppercase">BAH B</span><strong class="pen-merah-teks text-[9pt]">${markahB}</strong></div>
+              <div><span class="text-[6.5pt] block text-slate-500 font-bold uppercase">BAH C</span><strong class="pen-merah-teks text-[9pt]">${markahC}</strong></div>
+              <div class="border-l pl-1 border-rose-300"><span class="text-[6.5pt] block text-slate-500 font-bold uppercase">JUMLAH</span><strong class="pen-merah-teks text-[10pt]">${jumlahMarkah}/100</strong></div>
+              <div><span class="text-[6.5pt] block text-slate-500 font-bold uppercase">GRED</span><strong class="pen-merah-teks text-[11pt]">${gred}</strong></div>
+            </div>
+            <div class="col-span-3 text-[7.5pt] pl-1 border-l border-rose-200">
+              <strong class="pen-merah-teks block">Ulasan Guru:</strong>
+              <p class="pen-merah-teks italic leading-tight line-clamp-2">"${ulasan}"</p>
+            </div>
+          </div>
+
+          <!-- SUSUN ATUR 2 LAJUR ULTRA-KOMPAK -->
+          <div class="grid grid-cols-2 gap-3 text-[7.5pt]">
+            <div>
+              <div class="text-[8pt] font-black border-b border-indigo-900 text-indigo-950 mb-1 pb-0.5">BAHAGIAN A (SOALAN 1 - 6)</div>
+              ${kolum1Html}
+            </div>
+            <div>
+              <div class="text-[8pt] font-black border-b border-indigo-900 text-indigo-950 mb-1 pb-0.5">BAHAGIAN B & C (SOALAN 7 - 10)</div>
+              ${kolum2Html}
+            </div>
+          </div>
+        </div>
+      `;
+
+      setTimeout(() => {
+        window.print();
+      }, 250);
+    }
+
+    // =========================================================================
+    // 2. MENU CETAKAN LENGKAP SKRIP DENGAN SKEMA RASMI
+    // =========================================================================
+    function cetakSkripCalon(namaCalon) {
+      if (!namaCalon) { alert("Sila pilih calon terlebih dahulu."); return; }
+      const m = SENARAI_MURID.find(x => x.nama === namaCalon);
+      if (!m) { alert("Calon tidak dijumpai."); return; }
+      const normIc = normalizeIc(m.ic);
+
+      let answers = storedSubmissions[normIc] || {};
+      if (Object.keys(answers).length === 0) {
+        const local = localStorage.getItem(`jawapan_${normIc}`) || localStorage.getItem(`hantar_${normIc}`);
+        if (local) {
+          try {
+            const p = JSON.parse(local);
+            answers = p.answers || p;
+          } catch(e){}
+        }
+      }
+
+      let marksData = null;
+      const localMark = localStorage.getItem(`markah_${normIc}`);
+      if (localMark) {
+        try { marksData = JSON.parse(localMark); } catch(e){}
+      }
+
       const printBox = document.getElementById("printableExamScript");
       printBox.innerHTML = "";
 
@@ -2070,18 +2246,16 @@ ${itm.skema}
       let markahC = marksData ? (marksData.markahC || 0) : "-";
       let jumlahMarkah = marksData ? (marksData.total || marksData.jumlahMarkah || 0) : "-";
       let gred = marksData ? (marksData.gred || "-") : "-";
-      let ulasan = marksData ? (marksData.ulasan || "(Tiada ulasan)") : "(Kertas belum disemak sepenuhnya)";
-
+      let ulasan = marksData ? (marksData.ulasan || "(Tiada ulasan)") : "(Belum disemak sepenuhnya)";
       let itemScores = (marksData && (marksData.scores || marksData.markahPerItem)) ? (marksData.scores || marksData.markahPerItem) : {};
 
-      // 1. MUKA SURAT PENGENALAN & SLIP MARKAH
       let html = `
         <div class="border-b-4 border-slate-900 pb-4 mb-6">
           <div class="flex justify-between items-start">
             <div>
               <h1 class="text-xl font-black tracking-tight text-slate-900 uppercase">MODUL PINTAS PERCUBAAN SPM 2026</h1>
               <h2 class="text-base font-bold text-slate-800">PERNIAGAAN KERTAS 2 (3766/2)</h2>
-              <p class="text-xs text-slate-600">MPSM NEGERI PAHANG | SKRIP JAWAPAN & PENANDAAN GURU</p>
+              <p class="text-xs text-slate-600">MPSM NEGERI PAHANG | SKRIP JAWAPAN & PENANDAAN LENGKAP</p>
             </div>
             <div class="text-right">
               <span class="inline-block px-3 py-1 bg-slate-900 text-white font-mono font-bold text-xs rounded">SULIT</span>
@@ -2093,10 +2267,9 @@ ${itm.skema}
             <div><strong>NAMA CALON:</strong> ${m.nama}</div>
             <div><strong>NO. KAD PENGENALAN:</strong> <span class="font-mono">${m.ic}</span></div>
             <div><strong>MATA PELAJARAN:</strong> PERNIAGAAN (3766/2)</div>
-            <div><strong>STATUS SEMAKAN:</strong> <span class="font-bold text-rose-600">${marksData ? 'TELAH DISEMAK GURU' : 'BELUM DISEMAK'}</span></div>
+            <div><strong>STATUS:</strong> <span class="font-bold text-rose-600">${marksData ? 'TELAH DISEMAK GURU' : 'BELUM DISEMAK'}</span></div>
           </div>
 
-          <!-- KOTAK MARKAH GURU (PEN MERAH) -->
           <div class="mt-4 p-4 border-2 pen-merah-border pen-merah-bg rounded-xl">
             <h3 class="text-xs font-black uppercase tracking-wider pen-merah-teks flex items-center mb-2">
               <i class="fa-solid fa-stamp mr-1.5"></i> KEPUTUSAN PENANDAAN GURU (DAKWAT MERAH)
@@ -2131,7 +2304,6 @@ ${itm.skema}
         </div>
       `;
 
-      // 2. KANDUNGAN SOALAN, JAWAPAN DAN PENANDAAN GURU (S1 - S10)
       for (let sNo = 1; sNo <= 10; sNo++) {
         const keys = SOALAN_MAP[sNo];
         let bah = (sNo <= 6) ? "A" : (sNo <= 9 ? "B" : "C");
@@ -2140,7 +2312,7 @@ ${itm.skema}
           <div class="page-break-inside-avoid mb-6 border border-slate-300 rounded-xl overflow-hidden shadow-none">
             <div class="bg-slate-800 text-white px-4 py-2 flex justify-between items-center text-xs">
               <span class="font-bold">SOALAN ${sNo} (BAHAGIAN ${bah})</span>
-              <span class="font-mono text-slate-200">Peruntukan Markah: ${keys.reduce((sum, k) => sum + SKEMA_DATA[k].max, 0)}m</span>
+              <span class="font-mono text-slate-200">Peruntukan: ${keys.reduce((sum, k) => sum + SKEMA_DATA[k].max, 0)}m</span>
             </div>
             <div class="p-4 space-y-4 bg-white text-xs">
         `;
@@ -2149,9 +2321,14 @@ ${itm.skema}
           const itm = SKEMA_DATA[k];
           const ansText = answers[k] ? String(answers[k]).trim() : "(Tiada jawapan bertulis)";
           const scoreGiven = itemScores[k] !== undefined ? itemScores[k] : "-";
-
-          // Analisis kata kunci untuk semakan
           const aiCheck = analisisJawapanAI(k, ansText);
+
+          let tandaMerah = "";
+          if (scoreGiven !== "-") {
+            if (scoreGiven === itm.max) tandaMerah = `<span class="tanda-betul-merah">✓ Betul</span>`;
+            else if (scoreGiven > 0) tandaMerah = `<span class="tanda-betul-merah">✓/ Sebahagian</span>`;
+            else tandaMerah = `<span class="tanda-salah-merah">✗ Salah</span>`;
+          }
 
           html += `
             <div class="pt-2 border-b border-slate-200 pb-3 last:border-b-0">
@@ -2159,29 +2336,23 @@ ${itm.skema}
                 <div class="font-bold text-slate-900 leading-snug">
                   ${itm.tajuk}: <span class="font-normal text-slate-700">${itm.teksSoalan}</span>
                 </div>
-                <!-- BULATAN MARKAH MERAH GURU -->
-                <div class="text-right whitespace-nowrap">
-                  <span class="badge-markah-merah">
-                    ${scoreGiven} / ${itm.max} m
-                  </span>
+                <div class="text-right whitespace-nowrap flex items-center space-x-1.5">
+                  ${tandaMerah}
+                  <span class="badge-markah-merah">${scoreGiven} / ${itm.max} m</span>
                 </div>
               </div>
 
-              <!-- RUANG JAWAPAN CALON -->
               <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 leading-relaxed font-sans text-xs whitespace-pre-wrap mb-2">
                 <span class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Jawapan Calon:</span>
                 ${ansText}
               </div>
 
-              <!-- RUANG PENANDAAN & SKEMA (WARNA MERAH) -->
               <div class="p-2.5 pen-merah-bg border pen-merah-border rounded-lg text-[11px] leading-relaxed">
                 <div class="flex justify-between items-center font-bold pen-merah-teks mb-1">
                   <span><i class="fa-solid fa-pen-nib mr-1"></i> Penandaan & Skema Rasmi:</span>
                   <span class="text-[10px] font-mono">Markah Ditanda: ${scoreGiven}/${itm.max}m</span>
                 </div>
-                <div class="pen-merah-teks whitespace-pre-wrap font-mono text-[10px]">
-${itm.skema}
-                </div>
+                <div class="pen-merah-teks whitespace-pre-wrap font-mono text-[10px]">${itm.skema}</div>
                 ${aiCheck.kataKunciDitemui.length > 0 ? `
                   <div class="mt-1.5 pt-1.5 border-t pen-merah-border text-[10px] pen-merah-teks">
                     <strong>Kata Kunci Dikenal Pasti:</strong> ${aiCheck.kataKunciDitemui.join(", ")}
@@ -2199,11 +2370,7 @@ ${itm.skema}
       }
 
       printBox.innerHTML = html;
-
-      // Lancarkan cetakan pelayar
-      setTimeout(() => {
-        window.print();
-      }, 300);
+      setTimeout(() => { window.print(); }, 250);
     }
   </script>
 </body>
